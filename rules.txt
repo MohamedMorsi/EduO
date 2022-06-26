@@ -1,0 +1,5 @@
+Please
+- don't remove any comments typed by other 
+- follow the aretechture 
+- don't replace folders names or replace or move file's position
+- if you add new Controller you must update the postman collection
