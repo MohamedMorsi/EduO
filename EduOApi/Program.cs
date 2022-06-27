@@ -1,4 +1,5 @@
 
+using EduO.Api.Helpers.Factory;
 using EduO.Api.Services;
 using EduO.Api.Services.Contracts;
 using EduO.Core.Models;
@@ -29,8 +30,16 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddCors();
 
 //Register Identity
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<User, IdentityRole>(opt =>
+{
+    opt.Password.RequiredLength = 3;
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireUppercase = false;
+
+    opt.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomClaimsFactory>();
 
 //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -105,6 +114,8 @@ app.UseHttpsRedirection();
 //allow cors 
 app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -36,7 +36,7 @@ namespace EduO.ORM.Configurations
             },
             new IdentityRole
             {
-                Name = "secretary",
+                Name = "Secretary",
                 NormalizedName = "SECRETARY"
             }
             );

@@ -8,6 +8,10 @@ namespace EduO.Api.Helpers
     {
         public MappingProfile()
         {
+            //User
+            CreateMap<UserRegistrationModel, User>()
+            .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
+
             //Grade
             CreateMap<GradeDto, Grade>().ReverseMap();
 
