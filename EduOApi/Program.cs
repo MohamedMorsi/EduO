@@ -1,6 +1,8 @@
 
 using EduO.Api.Services;
 using EduO.Api.Services.Contracts;
+using EduO.Core.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -25,6 +27,10 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 //Cors
 builder.Services.AddCors();
+
+//Register Identity
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
