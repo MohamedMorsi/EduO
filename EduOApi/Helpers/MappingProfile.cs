@@ -9,7 +9,7 @@ namespace EduO.Api.Helpers
         public MappingProfile()
         {
             //User
-            CreateMap<UserRegistrationModel, User>()
+            CreateMap<UserRegistrationFormDto, User>()
             .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
 
             //Grade

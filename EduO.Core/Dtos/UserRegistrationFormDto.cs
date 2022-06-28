@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EduO.Core.Models
+namespace EduO.Core.Dtos
 {
-    public class UserRegistrationModel
+    public class UserRegistrationFormDto
     {
+        [Required(ErrorMessage = "FirstName is required")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "LastName is required")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress]

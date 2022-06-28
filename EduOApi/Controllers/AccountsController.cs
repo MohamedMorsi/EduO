@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EduO.Core.Dtos;
 using EduO.Core.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -10,12 +11,12 @@ namespace EduO.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AccountController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountsController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -23,30 +24,28 @@ namespace EduO.Api.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserRegistrationModel userModel)
+        [HttpPost("Register")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([FromBody] UserRegistrationFormDto userForRegistration)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(userModel);
-            }
-            var user = _mapper.Map<User>(userModel);
-            var result = await _userManager.CreateAsync(user, userModel.Password);
+            if (userForRegistration == null || !ModelState.IsValid)
+                return BadRequest();
+
+
+            var user = _mapper.Map<User>(userForRegistration);
+            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.TryAddModelError(error.Code, error.Description);
-                }
-                return BadRequest(userModel);
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
-            await _userManager.AddToRoleAsync(user, "Visitor");
-            return Ok(user);
+
+            //await _userManager.AddToRoleAsync(user, "Visitor");
+            return StatusCode(201);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginModel userModel)
         {
             if (!ModelState.IsValid)
@@ -80,14 +79,14 @@ namespace EduO.Api.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Logout()
+        //{
+        //     await _signInManager.SignOutAsync();
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
     }
 }

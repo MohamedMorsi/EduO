@@ -11,14 +11,14 @@ namespace EduO.ORM
         {
         }
 
-        public DbSet<Grade> Grades { get; set; }
-        public DbSet<Student> Students { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
+
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Student> Students { get; set; }
     }
 }

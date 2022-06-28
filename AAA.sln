@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduO.Core", "EduO.Core\EduO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduO.ORM", "EduO.ORM\EduO.ORM.csproj", "{FFBAE489-82BB-4516-8033-46324913CCC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduO.Web", "EduO.Web\EduO.Web.csproj", "{EE790B4A-FD27-45CA-8101-51DB8FBEC690}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduO.Web", "EduO.Web\EduO.Web.csproj", "{EE790B4A-FD27-45CA-8101-51DB8FBEC690}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
