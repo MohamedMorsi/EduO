@@ -4,6 +4,7 @@ using EduO.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduO.ORM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220630220054_AdditionalUserFiledsForRefreshToken")]
+    partial class AdditionalUserFiledsForRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,6 +120,7 @@ namespace EduO.ORM.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RefreshToken")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RefreshTokenExpiryTime")
@@ -175,36 +178,36 @@ namespace EduO.ORM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fe13a0c8-f74d-45c2-a0b7-5b54370788a9",
-                            ConcurrencyStamp = "b1bc4d2a-762a-444a-9f33-1976c45baa08",
+                            Id = "80cdffcc-8581-4ea9-91b8-c1f9393c6ce7",
+                            ConcurrencyStamp = "72b770d4-ab6a-4466-bd1f-da68773d4621",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "6343aaf2-278c-43f1-87f2-a7fd81419198",
-                            ConcurrencyStamp = "3f0b7ff0-eca6-40b8-9f3c-0b8168688189",
+                            Id = "6b54322d-8f68-4cfa-99de-d8b5144d4eba",
+                            ConcurrencyStamp = "aa99d1f5-dd95-49f3-963d-b22b9c51577b",
                             Name = "Visitor",
                             NormalizedName = "VISITOR"
                         },
                         new
                         {
-                            Id = "932b528e-f75a-40df-906d-88ece9ac377b",
-                            ConcurrencyStamp = "881c95df-7540-4125-a781-cdef661e3a8c",
+                            Id = "4a6af706-7400-49e3-9f98-1007357d4f84",
+                            ConcurrencyStamp = "0267b8dd-b59d-4490-bbf5-8a7ec8b37de6",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "cfa47dc4-5276-4372-8d13-d204b995267d",
-                            ConcurrencyStamp = "bc861b9d-eeb4-4881-aab2-d0d2a31500e9",
+                            Id = "a940604f-acab-4f16-a3bd-c7ec1674c25a",
+                            ConcurrencyStamp = "0ff8e206-7daa-4e87-8e3d-9d770c6a7d89",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "4b0d94f9-04b6-469e-835f-2c31473d794f",
-                            ConcurrencyStamp = "aef69f94-dc86-4dbf-a990-8f9adae8f7bc",
+                            Id = "e7225238-06ea-440c-af88-b29b917d2a22",
+                            ConcurrencyStamp = "a336f8b2-d0cf-4cff-821c-02af5a89e472",
                             Name = "Secretary",
                             NormalizedName = "SECRETARY"
                         });

@@ -1,8 +1,13 @@
-
+using EduO.Api.Helpers.Factory;
 using EduO.Api.Services;
 using EduO.Api.Services.Contracts;
+using EduO.Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,19 +25,67 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Cors
 builder.Services.AddCors();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Register Identity
+builder.Services.AddIdentity<User, IdentityRole>(opt =>
+{
+    opt.Password.RequiredLength = 3;
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireUppercase = false;
+
+    opt.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomClaimsFactory>();
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//JwtSettings
+var jwtSettings = builder.Configuration.GetSection("JWTSettings");
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["validIssuer"],
+        ValidAudience = jwtSettings["validAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["securityKey"]))
+    };
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IAuthService, AuthService>();
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //Services
 builder.Services.AddTransient<IGradeService, GradeService>();
 builder.Services.AddTransient<IStudentService, StudentService>();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
 //Swagger
 builder.Services.AddSwaggerGen(options =>
 {
@@ -85,6 +138,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -96,9 +151,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //allow cors 
 app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

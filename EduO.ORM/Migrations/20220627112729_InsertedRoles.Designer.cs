@@ -4,6 +4,7 @@ using EduO.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduO.ORM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220627112729_InsertedRoles")]
+    partial class InsertedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,10 +106,6 @@ namespace EduO.ORM.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -116,12 +114,6 @@ namespace EduO.ORM.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -175,37 +167,37 @@ namespace EduO.ORM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fe13a0c8-f74d-45c2-a0b7-5b54370788a9",
-                            ConcurrencyStamp = "b1bc4d2a-762a-444a-9f33-1976c45baa08",
+                            Id = "a089982f-800f-4a9a-a293-8cdfc62346f6",
+                            ConcurrencyStamp = "7f3f70ed-399a-48b5-bc44-34c328bcdcbb",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "6343aaf2-278c-43f1-87f2-a7fd81419198",
-                            ConcurrencyStamp = "3f0b7ff0-eca6-40b8-9f3c-0b8168688189",
+                            Id = "8c3ee06e-2cba-4654-9fe8-2348885b9238",
+                            ConcurrencyStamp = "6358c31d-9ce0-4852-9fd1-cdca7b639691",
                             Name = "Visitor",
                             NormalizedName = "VISITOR"
                         },
                         new
                         {
-                            Id = "932b528e-f75a-40df-906d-88ece9ac377b",
-                            ConcurrencyStamp = "881c95df-7540-4125-a781-cdef661e3a8c",
+                            Id = "39ea468e-3263-46b1-931d-505922d82114",
+                            ConcurrencyStamp = "16136199-3410-492b-8321-63b390d1dc78",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "cfa47dc4-5276-4372-8d13-d204b995267d",
-                            ConcurrencyStamp = "bc861b9d-eeb4-4881-aab2-d0d2a31500e9",
+                            Id = "28f7d09e-77c8-4b8e-957d-5e9ebaf33bcf",
+                            ConcurrencyStamp = "48d3b134-6973-4187-951c-e147faccf0a8",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "4b0d94f9-04b6-469e-835f-2c31473d794f",
-                            ConcurrencyStamp = "aef69f94-dc86-4dbf-a990-8f9adae8f7bc",
-                            Name = "Secretary",
+                            Id = "44113e0e-0b2d-4a30-b030-fdcde0e4e243",
+                            ConcurrencyStamp = "cb3932be-36d3-4c14-90f3-4d3b9feb6947",
+                            Name = "secretary",
                             NormalizedName = "SECRETARY"
                         });
                 });
