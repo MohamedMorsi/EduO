@@ -1,4 +1,5 @@
 ﻿@page "/counter"
+@using EduO.Web.HttpServices.Service
 @attribute [Authorize(Roles = "Administrator")]
 
 
@@ -27,6 +28,9 @@
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; }
 
+    [Inject]
+    public HttpInterceptorService Interceptor { get; set; }
+
     private async Task IncrementCount()
     {
         var authState = await AuthState;
@@ -36,4 +40,13 @@
         else
             currentCount--;
     }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Interceptor.RegisterEvent();   //=This means as long as we are on this component, every request will be intercepted and checked for the refresh token action.
+        //await GetProducts();
+    }
+
+     //All the other methods in this class - Get, Sort, Search, Delete  =  we dispose of our event as soon as we navigate away from this component.
+    public void Dispose() => Interceptor.DisposeEvent();
 }

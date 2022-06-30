@@ -10,5 +10,7 @@ namespace EduO.Api.Services.Contracts
         public SigningCredentials GetSigningCredentials();
         public Task<List<Claim>> GetClaims(User user);
         public JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims);
+        public string GenerateRefreshToken();
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }

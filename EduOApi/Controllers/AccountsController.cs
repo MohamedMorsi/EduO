@@ -44,7 +44,7 @@ namespace EduO.Api.Controllers
                 return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
 
-            await _userManager.AddToRoleAsync(user, "Visitor");  //toadd role to the new user
+            await _userManager.AddToRoleAsync(user, "Administrator");  //toadd role to the new user
             return StatusCode(201);
         }
 
@@ -100,7 +100,11 @@ namespace EduO.Api.Controllers
             var tokenOptions = _authService.GenerateTokenOptions(signingCredentials, claims);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
+            user.RefreshToken = _authService.GenerateRefreshToken();
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token, RefreshToken = user.RefreshToken });
         }
 
         //[HttpPost]

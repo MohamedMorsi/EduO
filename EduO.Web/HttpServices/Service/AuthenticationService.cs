@@ -51,6 +51,7 @@ namespace EduO.Web.HttpServices.Service
             if (!authResult.IsSuccessStatusCode)
                 return result;
             await _localStorage.SetItemAsync("authToken", result.Token);
+            await _localStorage.SetItemAsync("refreshToken", result.RefreshToken);
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Token);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
             return new AuthResponseDto { IsAuthSuccessful = true };
@@ -59,8 +60,45 @@ namespace EduO.Web.HttpServices.Service
         public async Task Logout()
         {
             await _localStorage.RemoveItemAsync("authToken");
+            await _localStorage.RemoveItemAsync("refreshToken");
             ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
             _client.DefaultRequestHeaders.Authorization = null;
+        }
+
+        public async Task<string> RefreshToken()
+        {
+            var token = await _localStorage.GetItemAsync<string>("authToken");
+            var refreshToken = await _localStorage.GetItemAsync<string>("refreshToken");
+
+            var tokenDto = JsonSerializer.Serialize(new RefreshTokenDto { Token = token, RefreshToken = refreshToken });
+            var bodyContent = new StringContent(tokenDto, Encoding.UTF8, "application/json");
+
+            var refreshResult = await _client.PostAsync("token/refresh", bodyContent);
+            var refreshContent = await refreshResult.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<AuthResponseDto>(refreshContent, _options);
+
+            if (!refreshResult.IsSuccessStatusCode)
+                throw new ApplicationException("Something went wrong during the refresh token action");
+
+            await _localStorage.SetItemAsync("authToken", result.Token);
+            await _localStorage.SetItemAsync("refreshToken", result.RefreshToken);
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
+
+            return result.Token;
+        }
+
+        public async Task<string> TryRefreshToken()
+        {
+            var authState = await _authStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            var exp = user.FindFirst(c => c.Type.Equals("exp")).Value;
+            var expTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(exp));
+            var timeUTC = DateTime.UtcNow;
+            var diff = expTime - timeUTC;
+            if (diff.TotalMinutes <= 5)
+                return await RefreshToken();
+            return string.Empty;
         }
     }
 }
