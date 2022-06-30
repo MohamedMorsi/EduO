@@ -2,8 +2,10 @@
 
 namespace EduO.Web.HttpServices.Contract
 {
-    public interface IAuthenticationService
+    public interface IAuthenticationService 
     {
         Task<RegistrationResponseDto> RegisterUser(UserRegistrationFormDto userForRegistration);
+        Task<AuthResponseDto> Login(UserForAuthenticationDto userForAuthentication);
+        Task Logout();
     }
 }

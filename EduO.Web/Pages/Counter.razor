@@ -1,15 +1,16 @@
 ﻿@page "/counter"
 @attribute [Authorize]
 
-<AuthorizeView Roles="Administrator">
+
+@*<AuthorizeView Roles="Administrator">
     <Authorized>
         The user: @context.User.FindFirst(ClaimTypes.Name).Value is authorized
-        @*@context.User.Claims.Where("lambda expression goes here");*@
+        @context.User.Claims.Where("lambda expression goes here");
     </Authorized>
     <NotAuthorized>
         The User is not authorized
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@
 
 <PageTitle>Counter</PageTitle>
 

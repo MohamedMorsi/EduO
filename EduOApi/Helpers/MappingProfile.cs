@@ -10,7 +10,8 @@ namespace EduO.Api.Helpers
         {
             //User
             CreateMap<UserRegistrationFormDto, User>()
-            .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
+            .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email))
+            .ForMember(u => u.Password, opt => opt.MapFrom(x => x.Password));
 
             //Grade
             CreateMap<GradeDto, Grade>().ReverseMap();

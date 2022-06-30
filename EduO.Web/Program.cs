@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using EduO.Web;
 using EduO.Web.AuthProviders;
 using EduO.Web.HttpServices.Contract;
@@ -10,6 +11,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
