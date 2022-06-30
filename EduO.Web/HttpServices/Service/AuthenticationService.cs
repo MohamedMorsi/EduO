@@ -51,7 +51,7 @@ namespace EduO.Web.HttpServices.Service
             if (!authResult.IsSuccessStatusCode)
                 return result;
             await _localStorage.SetItemAsync("authToken", result.Token);
-            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.Email);
+            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Token);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
             return new AuthResponseDto { IsAuthSuccessful = true };
         }

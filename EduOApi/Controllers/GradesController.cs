@@ -12,7 +12,7 @@ namespace EduO.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class GradesController : ControllerBase
     {
         private readonly IMapper _mapper;

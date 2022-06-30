@@ -8,7 +8,7 @@ namespace EduO.Api.Services.Contracts
     public interface IAuthService
     {
         public SigningCredentials GetSigningCredentials();
-        public List<Claim> GetClaims(User user);
+        public Task<List<Claim>> GetClaims(User user);
         public JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims);
     }
 }

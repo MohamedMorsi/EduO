@@ -15,6 +15,7 @@ namespace EduO.ORM
         {
             base.OnModelCreating(modelBuilder);
 
+            //Models Configurations
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
