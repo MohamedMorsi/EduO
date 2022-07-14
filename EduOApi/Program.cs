@@ -38,7 +38,7 @@ builder.Services.AddCors();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Register Identity
-builder.Services.AddIdentity<User, IdentityRole>(opt =>
+builder.Services.AddIdentity<User, Role>(opt =>
 {
     opt.Password.RequiredLength = 3;
     opt.Password.RequireDigit = false;
