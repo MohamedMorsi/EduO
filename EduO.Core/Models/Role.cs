@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace EduO.Core.Models
 {
-    public class Role:IdentityRole
+    public class Role : IdentityRole
     {
+        public bool active { get; set; }
     }
 }
