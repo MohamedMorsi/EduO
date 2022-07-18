@@ -1,5 +1,6 @@
 ﻿using EduO.Core.Dtos;
 using EduO.Web.HttpServices.Contract;
+using System.Text;
 using System.Text.Json;
 
 namespace EduO.Web.HttpServices.Service
@@ -28,6 +29,20 @@ namespace EduO.Web.HttpServices.Service
             return grades;
         }
 
+
+        public async Task CreateGrade(GradeDto grade)
+        {
+            var content = JsonSerializer.Serialize(grade);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+
+            var postResult = await _client.PostAsync("grades", bodyContent);
+            var postContent = await postResult.Content.ReadAsStringAsync();
+
+            if (!postResult.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(postContent);
+            }
+        }
 
     }
 }

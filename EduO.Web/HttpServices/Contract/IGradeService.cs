@@ -6,5 +6,6 @@ namespace EduO.Web.HttpServices.Contract
     public interface IGradeService
     {
         Task<List<GradeDto>> GetGrades();
+        Task CreateGrade(GradeDto grade);
     }
 }

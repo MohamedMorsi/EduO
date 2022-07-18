@@ -24,4 +24,8 @@
     <ProjectReference Include="..\EduO.ORM\EduO.ORM.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="StaticFiles\Images\" />
+  </ItemGroup>
+
 </Project>
