@@ -1,0 +1,41 @@
+﻿@page "/Grades"
+
+<div class="row">
+    <div class="col-md-10">
+        @*Place for search and sort*@
+    </div>
+    <div class="col-md-2">
+        <a href="/creategrade">Create Grade</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @*Place for products*@
+         <GradeTable Grades="GradeDtoList" />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @*Place for pagination*@
+    </div>
+</div>
+
+
+@code {
+
+    public List<GradeDto> GradeDtoList { get; set; } = new List<GradeDto>();
+
+    [Inject]
+    public IGradeService GradeService { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        GradeDtoList = await GradeService.GetGrades();
+        //just for testing
+        foreach (var product in GradeDtoList)
+        {
+            Console.WriteLine(product.Name);
+        }
+    }
+
+}
