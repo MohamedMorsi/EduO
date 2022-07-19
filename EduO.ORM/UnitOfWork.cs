@@ -1,7 +1,7 @@
 ﻿using EduO.Core;
-using EduO.Core.Contracts;
 using EduO.Core.Models;
 using EduO.ORM.Repositories;
+using EduO.ORM.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

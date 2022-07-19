@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EduO.Core.Contracts
+namespace EduO.ORM.Repositories.Contracts
 {
     public interface IGradesRepository : IBaseRepository<Grade>
     {
