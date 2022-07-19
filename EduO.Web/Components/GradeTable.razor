@@ -1,0 +1,81 @@
+﻿@if (Grades.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @*<th scope="col"></th>*@
+                <th scope="col">Name</th>
+            @*    <th scope="col">Supplier</th>
+                <th scope="col">Price</th>*@
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var grade in Grades)
+            {
+                <tr>
+                   @* <td>
+                        <img src="@grade.ImageUrl" alt="grade image" style="width:100px;" />
+                    </td>*@
+                    <td class="align-middle">
+                        @grade.Name
+                    </td>
+                  @*  <td class="align-middle">
+                        @grade.Supplier
+                    </td>
+                    <td class="align-middle">
+                        $@grade.Price
+                    </td>*@
+
+                    <td class="align-middle">
+                        <button type="button" class="btn btn-info" @onclick="() => RedirectToUpdate(grade.Id)">Update</button>
+                    </td>
+
+                    <td class="align-middle">
+                        <button type="button" class="btn btn-danger" @onclick="() => Delete(grade.Id)">Delete</button>
+                    </td>
+                </tr>
+             }
+            </tbody>
+    </table>
+}
+else
+{
+    <span>
+        Loading grades...
+    </span>
+}
+
+@code {
+
+    [Parameter]
+    public List<GradeDto> Grades { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnDeleted { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IJSRuntime Js { get; set; }
+
+    private void RedirectToUpdate(int id)
+    {
+        var url = Path.Combine($"/grades/updategrade/{id}");
+        NavigationManager.NavigateTo(url);
+    }
+
+    private async Task Delete(int id)
+    {
+        var grade = Grades.FirstOrDefault(p => p.Id.Equals(id));
+
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {grade.Name} grade?");
+        if (confirmed)
+        {
+            await OnDeleted.InvokeAsync(grade.Id);
+        }
+    }
+
+}

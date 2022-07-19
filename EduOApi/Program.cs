@@ -5,6 +5,7 @@ using EduO.Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -84,8 +85,18 @@ builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IGradeService, GradeService>();
 builder.Services.AddTransient<IStudentService, StudentService>();
 
+
+
+
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
+
 //Swagger
 builder.Services.AddSwaggerGen(options =>
 {
@@ -142,6 +153,15 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//upload files
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles")),
+    RequestPath = new PathString("/StaticFiles")
+});
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

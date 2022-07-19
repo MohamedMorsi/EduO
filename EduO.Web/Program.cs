@@ -17,6 +17,10 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44325/api/") }.EnableIntercept(sp));
+
+builder.Services.AddScoped<IGradeService, GradeService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddHttpClientInterceptor();
 
 builder.Services.AddScoped<HttpInterceptorService>();
