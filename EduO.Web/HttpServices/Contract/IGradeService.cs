@@ -7,5 +7,9 @@ namespace EduO.Web.HttpServices.Contract
     {
         Task<List<GradeDto>> GetGrades();
         Task CreateGrade(GradeDto grade);
+
+        Task<GradeDto> GetGrade(int id);
+        Task UpdateGrade(GradeDto grade);
+        Task DeleteGrade(int id);
     }
 }

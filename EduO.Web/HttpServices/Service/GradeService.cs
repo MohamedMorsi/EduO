@@ -44,5 +44,45 @@ namespace EduO.Web.HttpServices.Service
             }
         }
 
+        public async Task<GradeDto> GetGrade(int id)
+        {
+            var url = Path.Combine($"grades/{id}");
+
+            var response = await _client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(content);
+            }
+
+            var grade = JsonSerializer.Deserialize<GradeDto>(content, _options);
+            return grade;
+        }
+        public async Task UpdateGrade(GradeDto grade)
+        {
+            var content = JsonSerializer.Serialize(grade);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var url = Path.Combine("grades", grade.Id.ToString());
+
+            var putResult = await _client.PutAsync(url, bodyContent);
+            var putContent = await putResult.Content.ReadAsStringAsync();
+
+            if (!putResult.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(putContent);
+            }
+        }
+
+        public async Task DeleteGrade(int id)
+        {
+            var url = Path.Combine($"grades/{id}");
+
+            var deleteResult = await _client.DeleteAsync(url);
+            var deleteContent = await deleteResult.Content.ReadAsStringAsync();
+            if (!deleteResult.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(deleteContent);
+            }
+        }
     }
 }

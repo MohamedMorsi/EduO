@@ -1,17 +1,17 @@
-﻿@page "/Grades"
+﻿@page "/grades"
 
 <div class="row">
     <div class="col-md-10">
         @*Place for search and sort*@
     </div>
     <div class="col-md-2">
-        <a href="/creategrade">Create Grade</a>
+        <a href="/grades/creategrade">Create Grade</a>
     </div>
 </div>
 <div class="row">
     <div class="col">
         @*Place for products*@
-         <GradeTable Grades="GradeDtoList" />
+         <GradeTable Grades="GradeDtoList" OnDeleted="DeleteGrade" />
     </div>
 </div>
 <div class="row">
@@ -28,6 +28,9 @@
     [Inject]
     public IGradeService GradeService { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
     protected async override Task OnInitializedAsync()
     {
         GradeDtoList = await GradeService.GetGrades();
@@ -38,4 +41,19 @@
         }
     }
 
+    private async Task GetGrades()
+    {
+        GradeDtoList = await GradeService.GetGrades();
+    }
+
+
+    private async Task DeleteGrade(int id)
+    {
+        await GradeService.DeleteGrade(id);
+        //_productParameters.PageNumber = 1;
+        await GetGrades();
+        StateHasChanged();
+        //NavigationManager.NavigateTo("/grades");
+        
+    }
 }
