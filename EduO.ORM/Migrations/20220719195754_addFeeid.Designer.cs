@@ -4,6 +4,7 @@ using EduO.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduO.ORM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220719195754_addFeeid")]
+    partial class addFeeid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,16 +194,9 @@ namespace EduO.ORM.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GradeId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -261,14 +256,7 @@ namespace EduO.ORM.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Teacher");
                 });
@@ -528,15 +516,7 @@ namespace EduO.ORM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EduO.Core.Models.User", "User")
-                        .WithOne("Student")
-                        .HasForeignKey("EduO.Core.Models.Student", "UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Grade");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.StudentsCourses", b =>
@@ -575,17 +555,6 @@ namespace EduO.ORM.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("EduO.Core.Models.Teacher", b =>
-                {
-                    b.HasOne("EduO.Core.Models.User", "User")
-                        .WithOne("Teacher")
-                        .HasForeignKey("EduO.Core.Models.Teacher", "UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.TeacherCourses", b =>
@@ -691,13 +660,6 @@ namespace EduO.ORM.Migrations
                     b.Navigation("StudentsTeachers");
 
                     b.Navigation("TeacherCourses");
-                });
-
-            modelBuilder.Entity("EduO.Core.Models.User", b =>
-                {
-                    b.Navigation("Student");
-
-                    b.Navigation("Teacher");
                 });
 #pragma warning restore 612, 618
         }

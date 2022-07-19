@@ -31,6 +31,8 @@ namespace EduO.ORM
             //one-to-one relation using FluentApi
             // added using Convention approach
             //The easiest way to configure this type of relationship is to use by the Convention approach,
+            modelBuilder.Entity<Teacher>().HasOne(e => e.User).WithOne(s => s.Teacher).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Student>().HasOne(e => e.User).WithOne(s => s.Student).OnDelete(DeleteBehavior.NoAction);
 
 
             //one-to-many relation using FluentApi

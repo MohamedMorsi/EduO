@@ -19,5 +19,10 @@ namespace EduO.Core.Models
 
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
+        
+        /////////////////////////////////////////////////////////////
+
+        public Teacher? Teacher { get; set; }
+        public Student? Student { get; set; }
     }
 }

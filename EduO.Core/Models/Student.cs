@@ -24,6 +24,11 @@ namespace EduO.Core.Models
         public int GradeId { get; set; }
         public Grade Grade { get; set; }
 
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+        public User User { get; set; }
+
+
         public ICollection<StudentsTeachers> StudentsTeachers { get; set; }
         public ICollection<StudentsCourses> StudentsCourses { get; set; }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EduO.Core.Models
 {
-    public  class Fee
+    public  class Fee :BaseModelI
     {
         public int Id { get; set; }
         public string Desc { get; set; }
