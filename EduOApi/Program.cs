@@ -38,7 +38,7 @@ builder.Services.AddCors();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Register Identity
-builder.Services.AddIdentity<User, IdentityRole>(opt =>
+builder.Services.AddIdentity<User, Role>(opt =>
 {
     opt.Password.RequiredLength = 3;
     opt.Password.RequireDigit = false;
@@ -141,6 +141,37 @@ builder.Services.AddSwaggerGen(options =>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var app = builder.Build();
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Seednig data in first run 
+using var scope = app.Services.CreateScope();   
+var services = scope.ServiceProvider;
+
+//Create Logger
+var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+var logger = loggerFactory.CreateLogger("app");
+
+try
+{
+    var userManger = services.GetRequiredService<UserManager<User>>();
+    var roleManger = services.GetRequiredService<RoleManager<Role>>();
+
+    await EduO.ORM.Seeds.RoleSeeds.SeedRoles(roleManger);
+    await EduO.ORM.Seeds.UserSeeds.SeedUsers(userManger,roleManger);
+
+    logger.LogInformation("Roles & First User seeded");
+    logger.LogInformation("Application Started");
+}
+catch (Exception ex)
+{
+    logger.LogWarning("Seeding Data Failed");
+    logger.LogWarning("ex : " + ex);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

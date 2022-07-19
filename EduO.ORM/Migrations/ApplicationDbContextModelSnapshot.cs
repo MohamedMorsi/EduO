@@ -40,6 +40,36 @@ namespace EduO.ORM.Migrations
                     b.ToTable("Grades");
                 });
 
+            modelBuilder.Entity("EduO.Core.Models.Role", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("active")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Roles", "security");
+                });
+
             modelBuilder.Entity("EduO.Core.Models.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -96,6 +126,9 @@ namespace EduO.ORM.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Middelname")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -105,7 +138,6 @@ namespace EduO.ORM.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
@@ -143,71 +175,7 @@ namespace EduO.ORM.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "fe13a0c8-f74d-45c2-a0b7-5b54370788a9",
-                            ConcurrencyStamp = "b1bc4d2a-762a-444a-9f33-1976c45baa08",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "6343aaf2-278c-43f1-87f2-a7fd81419198",
-                            ConcurrencyStamp = "3f0b7ff0-eca6-40b8-9f3c-0b8168688189",
-                            Name = "Visitor",
-                            NormalizedName = "VISITOR"
-                        },
-                        new
-                        {
-                            Id = "932b528e-f75a-40df-906d-88ece9ac377b",
-                            ConcurrencyStamp = "881c95df-7540-4125-a781-cdef661e3a8c",
-                            Name = "Teacher",
-                            NormalizedName = "TEACHER"
-                        },
-                        new
-                        {
-                            Id = "cfa47dc4-5276-4372-8d13-d204b995267d",
-                            ConcurrencyStamp = "bc861b9d-eeb4-4881-aab2-d0d2a31500e9",
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        },
-                        new
-                        {
-                            Id = "4b0d94f9-04b6-469e-835f-2c31473d794f",
-                            ConcurrencyStamp = "aef69f94-dc86-4dbf-a990-8f9adae8f7bc",
-                            Name = "Secretary",
-                            NormalizedName = "SECRETARY"
-                        });
+                    b.ToTable("Users", "security");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -232,7 +200,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("RoleClaims", "security");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -257,7 +225,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("UserClaims", "security");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -279,7 +247,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("UserLogins", "security");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -294,7 +262,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("UserRoles", "security");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -313,7 +281,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("UserTokens", "security");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.Student", b =>
@@ -329,7 +297,7 @@ namespace EduO.ORM.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("EduO.Core.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,7 +324,7 @@ namespace EduO.ORM.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("EduO.Core.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
