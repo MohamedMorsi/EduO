@@ -10,5 +10,6 @@ namespace EduO.Core.Models
     public class Role : IdentityRole
     {
         public bool active { get; set; }
+        public string role_desc { get; set; }
     }
 }

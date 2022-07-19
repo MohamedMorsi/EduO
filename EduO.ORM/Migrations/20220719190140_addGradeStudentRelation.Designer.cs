@@ -4,6 +4,7 @@ using EduO.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduO.ORM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220719190140_addGradeStudentRelation")]
+    partial class addGradeStudentRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,21 +46,6 @@ namespace EduO.ORM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Grades");
-                });
-
-            modelBuilder.Entity("EduO.Core.Models.GradesTeachers", b =>
-                {
-                    b.Property<int>("GrdaeId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TeacherId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("GrdaeId", "TeacherId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("GradesTeachers");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.Role", b =>
@@ -97,12 +84,11 @@ namespace EduO.ORM.Migrations
 
             modelBuilder.Entity("EduO.Core.Models.Student", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -120,44 +106,11 @@ namespace EduO.ORM.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
+                    b.HasKey("StudentId");
 
                     b.HasIndex("GradeId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("EduO.Core.Models.Teacher", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Mobile_Number")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Teacher");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.User", b =>
@@ -351,25 +304,6 @@ namespace EduO.ORM.Migrations
                     b.ToTable("UserTokens", "security");
                 });
 
-            modelBuilder.Entity("EduO.Core.Models.GradesTeachers", b =>
-                {
-                    b.HasOne("EduO.Core.Models.Grade", "Grade")
-                        .WithMany("GradesTeachers")
-                        .HasForeignKey("GrdaeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EduO.Core.Models.Teacher", "Teacher")
-                        .WithMany("GradesTeachers")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Grade");
-
-                    b.Navigation("Teacher");
-                });
-
             modelBuilder.Entity("EduO.Core.Models.Student", b =>
                 {
                     b.HasOne("EduO.Core.Models.Grade", "Grade")
@@ -434,14 +368,7 @@ namespace EduO.ORM.Migrations
 
             modelBuilder.Entity("EduO.Core.Models.Grade", b =>
                 {
-                    b.Navigation("GradesTeachers");
-
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("EduO.Core.Models.Teacher", b =>
-                {
-                    b.Navigation("GradesTeachers");
                 });
 #pragma warning restore 612, 618
         }

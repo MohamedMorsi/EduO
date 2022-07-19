@@ -27,9 +27,20 @@ namespace EduO.ORM
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins", "security");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens", "security");
 
+
+            //one-to-many relation using FluentApi
+            modelBuilder.Entity<Grade>().HasMany(e => e.Students).WithOne(s => s.Grade).HasForeignKey(s => s.GradeId);
+
+
+            //many-To-many relation using FluentApi  
+            modelBuilder.Entity<GradesTeachers>().HasKey(s => new { s.GrdaeId, s.TeacherId });
+            modelBuilder.Entity<GradesTeachers>().HasOne(ss => ss.Grade).WithMany(s => s.GradesTeachers).HasForeignKey(ss => ss.GrdaeId);
+            modelBuilder.Entity<GradesTeachers>().HasOne(ss => ss.Teacher).WithMany(s => s.GradesTeachers).HasForeignKey(ss => ss.TeacherId);
+            
         }
 
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<GradesTeachers> GradesTeachers { get; set; }
     }
 }
