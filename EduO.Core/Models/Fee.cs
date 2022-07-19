@@ -11,5 +11,11 @@ namespace EduO.Core.Models
         public int Id { get; set; }
         public string Desc { get; set; }
         public string Type { get; set; }
+
+        /////////////////////////////////////////////////////////
+        ///
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
+
     }
 }

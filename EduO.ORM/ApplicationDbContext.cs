@@ -29,6 +29,8 @@ namespace EduO.ORM
 
 
             //one-to-one relation using FluentApi
+            // added using Convention approach
+            //The easiest way to configure this type of relationship is to use by the Convention approach,
 
 
             //one-to-many relation using FluentApi
@@ -62,5 +64,6 @@ namespace EduO.ORM
         public DbSet<Course> Courses { get; set; }
         public DbSet<StudentsCourses> StudentsCourses { get; set; }
         public DbSet<TeacherCourses> TeacherCourses { get; set; }
+        public DbSet<Fee> Fees { get; set; }
     }
 }

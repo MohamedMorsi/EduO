@@ -16,11 +16,16 @@ namespace EduO.Core.Models
 
         ///////////////////////////////////////////////////
 
+        public Fee Fee { get; set; }
+
+
         public int GradeId { get; set; }
         public Grade Grade { get; set; }
 
         public ICollection<StudentsCourses> StudentsCourses { get; set; }
         public ICollection<TeacherCourses> TeacherCourses { get; set; }
+
+
 
 
     }
