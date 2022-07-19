@@ -23,5 +23,8 @@ namespace EduO.Core.Models
         //[ForeignKey(nameof(Grade))]   //use it if we don't use fluentApi
         public int GradeId { get; set; }
         public Grade Grade { get; set; }
+
+        public ICollection<StudentsTeachers> StudentsTeachers { get; set; }
+        public ICollection<StudentsCourses> StudentsCourses { get; set; }
     }
 }

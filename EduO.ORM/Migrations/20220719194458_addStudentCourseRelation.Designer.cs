@@ -4,6 +4,7 @@ using EduO.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduO.ORM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220719194458_addStudentCourseRelation")]
+    partial class addStudentCourseRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,21 +226,6 @@ namespace EduO.ORM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Teacher");
-                });
-
-            modelBuilder.Entity("EduO.Core.Models.TeacherCourses", b =>
-                {
-                    b.Property<Guid>("TeacherId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TeacherId", "CourseId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("TeacherCourses");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.User", b =>
@@ -511,25 +498,6 @@ namespace EduO.ORM.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("EduO.Core.Models.TeacherCourses", b =>
-                {
-                    b.HasOne("EduO.Core.Models.Course", "Course")
-                        .WithMany("TeacherCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("EduO.Core.Models.Teacher", "Teacher")
-                        .WithMany("TeacherCourses")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Teacher");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("EduO.Core.Models.Role", null)
@@ -584,8 +552,6 @@ namespace EduO.ORM.Migrations
             modelBuilder.Entity("EduO.Core.Models.Course", b =>
                 {
                     b.Navigation("StudentsCourses");
-
-                    b.Navigation("TeacherCourses");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.Grade", b =>
@@ -609,8 +575,6 @@ namespace EduO.ORM.Migrations
                     b.Navigation("GradesTeachers");
 
                     b.Navigation("StudentsTeachers");
-
-                    b.Navigation("TeacherCourses");
                 });
 #pragma warning restore 612, 618
         }

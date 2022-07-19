@@ -11,6 +11,9 @@ namespace EduO.Core.Models
 
         //////////////////////////////////////////////////////
         public ICollection<Student> Students { get; set; }
+        public ICollection<Course> Courses { get; set; }
+
+
         public ICollection<GradesTeachers> GradesTeachers { get; set; }
     }
 }

@@ -28,19 +28,39 @@ namespace EduO.ORM
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens", "security");
 
 
+            //one-to-one relation using FluentApi
+
+
             //one-to-many relation using FluentApi
             modelBuilder.Entity<Grade>().HasMany(e => e.Students).WithOne(s => s.Grade).HasForeignKey(s => s.GradeId);
+            modelBuilder.Entity<Grade>().HasMany(e => e.Courses).WithOne(s => s.Grade).HasForeignKey(s => s.GradeId);
 
 
             //many-To-many relation using FluentApi  
             modelBuilder.Entity<GradesTeachers>().HasKey(s => new { s.GrdaeId, s.TeacherId });
             modelBuilder.Entity<GradesTeachers>().HasOne(ss => ss.Grade).WithMany(s => s.GradesTeachers).HasForeignKey(ss => ss.GrdaeId);
             modelBuilder.Entity<GradesTeachers>().HasOne(ss => ss.Teacher).WithMany(s => s.GradesTeachers).HasForeignKey(ss => ss.TeacherId);
-            
+
+            modelBuilder.Entity<StudentsTeachers>().HasKey(s => new { s.StudentId, s.TeacherId });
+            modelBuilder.Entity<StudentsTeachers>().HasOne(ss => ss.Teacher).WithMany(s => s.StudentsTeachers).HasForeignKey(ss => ss.TeacherId);
+            modelBuilder.Entity<StudentsTeachers>().HasOne(ss => ss.Student).WithMany(s => s.StudentsTeachers).HasForeignKey(ss => ss.StudentId);
+
+            modelBuilder.Entity<StudentsCourses>().HasKey(s => new { s.StudentId, s.CourseId });
+            modelBuilder.Entity<StudentsCourses>().HasOne(ss => ss.Course).WithMany(s => s.StudentsCourses).HasForeignKey(ss => ss.CourseId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<StudentsCourses>().HasOne(ss => ss.Student).WithMany(s => s.StudentsCourses).HasForeignKey(ss => ss.StudentId).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TeacherCourses>().HasKey(s => new { s.TeacherId, s.CourseId });
+            modelBuilder.Entity<TeacherCourses>().HasOne(ss => ss.Course).WithMany(s => s.TeacherCourses).HasForeignKey(ss => ss.CourseId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<TeacherCourses>().HasOne(ss => ss.Teacher).WithMany(s => s.TeacherCourses).HasForeignKey(ss => ss.TeacherId).OnDelete(DeleteBehavior.NoAction);
+
         }
 
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<GradesTeachers> GradesTeachers { get; set; }
+        public DbSet<StudentsTeachers> StudentsTeachers { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<StudentsCourses> StudentsCourses { get; set; }
+        public DbSet<TeacherCourses> TeacherCourses { get; set; }
     }
 }
