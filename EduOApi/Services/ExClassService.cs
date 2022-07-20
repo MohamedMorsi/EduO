@@ -4,64 +4,64 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduO.Api.Services
 {
-    public class GradeService : IBaseService<Grade>
+    public class ExClassService : IBaseService<ExClass>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GradeService(IUnitOfWork unitOfWork)
+        public ExClassService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         /////////////////////////////////////////////////////////////
         
-        IEnumerable<Grade> IBaseService<Grade>.GetAll()
+        IEnumerable<ExClass> IBaseService<ExClass>.GetAll()
         {
-            return _unitOfWork.Grades.GetAll();
+            return _unitOfWork.ExClass.GetAll();
         }
 
-        public async Task<IEnumerable<Grade>> GetAllAsync()
+        public async Task<IEnumerable<ExClass>> GetAllAsync()
         {
-            return await _unitOfWork.Grades.GetAllAsync();
-        }
-        /////////////////////////////////////////////////////////////
-
-        public Grade GetById(params object?[]? id)
-        {
-           return _unitOfWork.Grades.GetById(id);
-        }
-
-        public async Task<Grade> GetByIdAsync(params object?[]? id)
-        {
-            return await _unitOfWork.Grades.GetByIdAsync(id);
+            return await _unitOfWork.ExClass.GetAllAsync();
         }
         /////////////////////////////////////////////////////////////
 
-        Grade IBaseService<Grade>.Add(Grade entity)
+        public ExClass GetById(params object?[]? id)
+        {
+           return _unitOfWork.ExClass.GetById(id);
+        }
+
+        public async Task<ExClass> GetByIdAsync(params object?[]? id)
+        {
+            return await _unitOfWork.ExClass.GetByIdAsync(id);
+        }
+        /////////////////////////////////////////////////////////////
+
+        ExClass IBaseService<ExClass>.Add(ExClass entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
             entity.UpdatedAt = DateTime.UtcNow;
-            _unitOfWork.Grades.Add(entity);
+            _unitOfWork.ExClass.Add(entity);
             _unitOfWork.Save();
 
             return entity;
         }
 
-        public async Task<Grade> AddAsync(Grade entity)
+        public async Task<ExClass> AddAsync(ExClass entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
             entity.UpdatedAt = DateTime.UtcNow;
-            await _unitOfWork.Grades.AddAsync(entity);
+            await _unitOfWork.ExClass.AddAsync(entity);
             _unitOfWork.Save();
 
             return entity;
         }
         /////////////////////////////////////////////////////////////
         ///
-        public Grade Update(Grade entity)
+        public ExClass Update(ExClass entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;
-            _unitOfWork.Grades.Update(entity);
+            _unitOfWork.ExClass.Update(entity);
             _unitOfWork.Save();
 
             return entity;
@@ -69,9 +69,9 @@ namespace EduO.Api.Services
 
         /////////////////////////////////////////////////////////////
         ///
-        public Grade Delete(Grade entity)
+        public ExClass Delete(ExClass entity)
         {
-            _unitOfWork.Grades.Delete(entity);
+            _unitOfWork.ExClass.Delete(entity);
             _unitOfWork.Save();
 
             return entity;

@@ -14,12 +14,13 @@ namespace EduO.ORM
     {
         private readonly ApplicationDbContext _context;
 
+        public IBaseRepository<ExClass> ExClass { get; private set; }
         public IBaseRepository<Grade> Grades { get; private set; }
         public IBaseRepository<Student> Students { get; private set; }
-        public IBaseRepository<Course> Coursees => throw new NotImplementedException();
-        public IBaseRepository<Fee> Fees => throw new NotImplementedException();
-        public IBaseRepository<Teacher> Teachers => throw new NotImplementedException();
-        public IBaseRepository<User> Users => throw new NotImplementedException();
+        public IBaseRepository<Course> Courses  { get; private set; }
+        public IBaseRepository<Fee> Fees { get; private set; }
+        public IBaseRepository<Teacher> Teachers { get; private set; }
+        public IBaseRepository<User> Users { get; private set; }
 
         //public IGradesRepository Grades { get; private set; }
 
@@ -27,8 +28,14 @@ namespace EduO.ORM
         {
             _context = context;
 
-            Students = new BaseRepository<Student>(_context);
+            ExClass = new BaseRepository<ExClass>(_context);
+
             Grades = new BaseRepository<Grade>(_context);
+            Students = new BaseRepository<Student>(_context);
+            Courses = new BaseRepository<Course>(_context);
+            Fees = new BaseRepository<Fee>(_context);
+            Teachers = new BaseRepository<Teacher>(_context);
+            Users = new BaseRepository<User>(_context);
             //Grades = new GradesRepository(_context);
         }
 

@@ -10,9 +10,11 @@ namespace EduO.ORM
 {
     public interface IUnitOfWork : IDisposable
     {
+        IBaseRepository<ExClass> ExClass { get; }
+
         IBaseRepository<Grade> Grades { get; }
         IBaseRepository<Student> Students { get; }
-        IBaseRepository<Course> Coursees { get; }
+        IBaseRepository<Course> Courses { get; }
         IBaseRepository<Fee> Fees { get; }
         IBaseRepository<Teacher> Teachers { get; }
         IBaseRepository<User> Users { get; }

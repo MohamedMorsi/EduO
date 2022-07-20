@@ -24,7 +24,7 @@ namespace EduO.Api.Controllers
             _gradeService = gradeService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
             var grades = _gradeService.GetAll();
@@ -33,7 +33,7 @@ namespace EduO.Api.Controllers
             return Ok(dtos);
         }
 
-        [HttpGet]
+        [HttpGet("GetAllAsync")]
         public async Task<IActionResult> GetAllAsync()
         {
             var grades = await _gradeService.GetAllAsync();
@@ -42,16 +42,16 @@ namespace EduO.Api.Controllers
             return Ok(dtos);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
-            var grade =_gradeService.GetById(id);
+            var grade = _gradeService.GetById(id);
             var dto = _mapper.Map<GradeDto>(grade);
 
             return Ok(dto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetByIdAsync/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var grade = await _gradeService.GetByIdAsync(id);
@@ -60,7 +60,7 @@ namespace EduO.Api.Controllers
             return Ok(dto);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public IActionResult Create(GradeDto dto)
         {
             var grade = _mapper.Map<Grade>(dto);
@@ -70,7 +70,7 @@ namespace EduO.Api.Controllers
             return Ok(grade);
         }
 
-        [HttpPost]
+        [HttpPost("CreateAsync")]
         public async Task<IActionResult> CreateAsync(GradeDto dto)
         {
             var grade = _mapper.Map<Grade>(dto);
@@ -80,7 +80,7 @@ namespace EduO.Api.Controllers
             return Ok(grade);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("UpdateAsync/{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] GradeDto dto)
         {
             var grade = await _gradeService.GetByIdAsync(id);
@@ -95,7 +95,7 @@ namespace EduO.Api.Controllers
             return Ok(grade);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteAsync/{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var grade = await _gradeService.GetByIdAsync(id);
@@ -107,33 +107,6 @@ namespace EduO.Api.Controllers
 
             return Ok(grade);
         }
-
-
-        //[HttpGet("GetByName")]
-        //public IActionResult GetByName()
-        //{
-        //    return Ok(_unitOfWork.Books.Find(b => b.Title == "New Book", new[] { "Author" }));
-        //}
-
-        //[HttpGet("GetAllWithAuthors")]
-        //public IActionResult GetAllWithAuthors()
-        //{
-        //    return Ok(_unitOfWork.Books.FindAll(b => b.Title.Contains("New Book"), new[] { "Author" }));
-        //}
-
-        //[HttpGet("GetOrdered")]
-        //public IActionResult GetOrdered()
-        //{
-        //    return Ok(_unitOfWork.Books.FindAll(b => b.Title.Contains("New Book"), null, null, b => b.Id, OrderBy.Descending));
-        //}
-
-        //[HttpPost("AddOne")]
-        //public IActionResult AddOne()
-        //{
-        //    var book = _unitOfWork.Books.Add(new Book { Title = "Test 4", AuthorId = 1 });
-        //    _unitOfWork.Complete();
-        //    return Ok(book);
-        //}
 
     }
 }

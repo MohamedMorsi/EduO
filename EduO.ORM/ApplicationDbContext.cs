@@ -59,6 +59,8 @@ namespace EduO.ORM
 
         }
 
+        public DbSet<ExClass> ExClass { get; set; }
+
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<GradesTeachers> GradesTeachers { get; set; }
