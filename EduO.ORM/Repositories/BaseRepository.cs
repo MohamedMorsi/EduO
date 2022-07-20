@@ -27,16 +27,20 @@ namespace EduO.ORM.Repositories
         {
             return await _context.Set<T>().ToListAsync();
         }
+        //////////////////////
 
-        public T GetById(int id)
+        public T GetById(params object?[]? id)
         {
             return _context.Set<T>().Find(id);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(params object?[]? id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
+
+        //////////////////////
+
 
         public T Add(T entity)
         {
@@ -61,12 +65,14 @@ namespace EduO.ORM.Repositories
             await _context.Set<T>().AddRangeAsync(entities);
             return entities;
         }
+        //////////////////////
 
         public T Update(T entity)
         {
             _context.Update(entity);
             return entity;
         }
+        //////////////////////
 
         public void Delete(T entity)
         {
@@ -77,6 +83,7 @@ namespace EduO.ORM.Repositories
         {
             _context.Set<T>().RemoveRange(entities);
         }
+        //////////////////////
 
         //public T Find(Expression<Func<T, bool>> criteria, string[] includes = null)
         //{
