@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduO.Api.Services
 {
-    public class GradeService : IGradeService
+    public class GradeService : IBaseService<Grade>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,43 +13,63 @@ namespace EduO.Api.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Grade>> GetAll()
+        /////////////////////////////////////////////////////////////
+        
+        IEnumerable<Grade> IBaseService<Grade>.GetAll()
+        {
+            return _unitOfWork.Grades.GetAll();
+        }
+
+        public async Task<IEnumerable<Grade>> GetAllAsync()
         {
             return await _unitOfWork.Grades.GetAllAsync();
         }
+        /////////////////////////////////////////////////////////////
 
-        public async Task<Grade> GetById(int id)
+        public Grade GetById(params object?[]? id)
+        {
+           return _unitOfWork.Grades.GetById(id);
+        }
+
+        public async Task<Grade> GetByIdAsync(params object?[]? id)
         {
             return await _unitOfWork.Grades.GetByIdAsync(id);
         }
+        /////////////////////////////////////////////////////////////
 
-        public async Task<Grade> Add(Grade grade)
+        Grade IBaseService<Grade>.Add(Grade entity)
         {
-            await _unitOfWork.Grades.AddAsync(grade);
+            _unitOfWork.Grades.Add(entity);
             _unitOfWork.Save();
 
-            return grade;
+            return entity;
         }
 
-        public Grade Update(Grade grade)
+        public async Task<Grade> AddAsync(Grade entity)
         {
-            _unitOfWork.Grades.Update(grade);
+            await _unitOfWork.Grades.AddAsync(entity);
             _unitOfWork.Save();
 
-            return grade;
+            return entity;
         }
-
-        public Grade Delete(Grade grade)
+        /////////////////////////////////////////////////////////////
+        ///
+        public Grade Update(Grade entity)
         {
-            _unitOfWork.Grades.Delete(grade);
+            _unitOfWork.Grades.Update(entity);
             _unitOfWork.Save();
 
-            return grade;
+            return entity;
         }
 
-        //public Task<bool> IsvalidGenre(int id)
-        //{
-        //    return _context.Grades.AnyAsync(g => g.Id == id);
-        //}
+        /////////////////////////////////////////////////////////////
+        ///
+        public Grade Delete(Grade entity)
+        {
+            _unitOfWork.Grades.Delete(entity);
+            _unitOfWork.Save();
+
+            return entity;
+        }
     }
 }

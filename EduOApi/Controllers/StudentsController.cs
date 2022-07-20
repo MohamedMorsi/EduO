@@ -17,12 +17,12 @@ namespace EduO.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IStudentService _studentService;
-        private readonly IGradeService _gradeService;
+        private readonly IBaseService<Grade> _gradeService;
 
         //private new List<string> _allowedExtenstions = new List<string> { ".jpg", ".png" };
         //private long _maxAllowedPosterSize = 1048576;
 
-        public StudentsController(IStudentService studentService, IGradeService gradeService, IMapper mapper)
+        public StudentsController(IStudentService studentService, IBaseService<Grade> gradeService, IMapper mapper)
         {
             _studentService = studentService;
             _gradeService = gradeService;

@@ -2,13 +2,13 @@
 
 namespace EduO.Api.Services.Contracts
 {
-    public interface IGradeService
-    {
-        Task<IEnumerable<Grade>> GetAll();
-        Task<Grade> GetById(int id);
-        Task<Grade> Add(Grade grade);
-        Grade Update(Grade grade);
-        Grade Delete(Grade grade);
-        //Task<bool> IsvalidGenre(int id);
-    }
+    //public interface IGradeService
+    //{
+    //    Task<IEnumerable<Grade>> GetAll();
+    //    Task<Grade> GetById(int id);
+    //    Task<Grade> Add(Grade grade);
+    //    Grade Update(Grade grade);
+    //    Grade Delete(Grade grade);
+    //    //Task<bool> IsvalidGenre(int id);
+    //}
 }

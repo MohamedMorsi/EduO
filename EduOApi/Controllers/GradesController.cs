@@ -16,30 +16,58 @@ namespace EduO.Api.Controllers
     public class GradesController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IGradeService _gradeService;
+        private readonly IBaseService<Grade> _gradeService;
 
-        public GradesController(IGradeService gradeService, IMapper mapper)
+        public GradesController(IBaseService<Grade> gradeService, IMapper mapper)
         {
             _mapper = mapper;
             _gradeService = gradeService;
         }
 
         [HttpGet]
+        public IActionResult GetAll()
+        {
+            var grades = _gradeService.GetAll();
+            var dtos = _mapper.Map<IEnumerable<GradeDto>>(grades);
+
+            return Ok(dtos);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var grades = await _gradeService.GetAll();
+            var grades = await _gradeService.GetAllAsync();
             var dtos = _mapper.Map<IEnumerable<GradeDto>>(grades);
 
             return Ok(dtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        public IActionResult GetById(int id)
         {
-            var grade = await _gradeService.GetById(id);
+            var grade =_gradeService.GetById(id);
             var dto = _mapper.Map<GradeDto>(grade);
 
             return Ok(dto);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var grade = await _gradeService.GetByIdAsync(id);
+            var dto = _mapper.Map<GradeDto>(grade);
+
+            return Ok(dto);
+        }
+
+        [HttpPost]
+        public IActionResult Create(GradeDto dto)
+        {
+            var grade = _mapper.Map<Grade>(dto);
+
+            _gradeService.Add(grade);
+
+            return Ok(grade);
         }
 
         [HttpPost]
@@ -47,7 +75,7 @@ namespace EduO.Api.Controllers
         {
             var grade = _mapper.Map<Grade>(dto);
 
-            await _gradeService.Add(grade);
+            await _gradeService.AddAsync(grade);
 
             return Ok(grade);
         }
@@ -55,7 +83,7 @@ namespace EduO.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] GradeDto dto)
         {
-            var grade = await _gradeService.GetById(id);
+            var grade = await _gradeService.GetByIdAsync(id);
 
             if (grade == null)
                 return NotFound($"No grade was found with ID: {id}");
@@ -70,7 +98,7 @@ namespace EduO.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var grade = await _gradeService.GetById(id);
+            var grade = await _gradeService.GetByIdAsync(id);
 
             if (grade == null)
                 return NotFound($"No grade was found with ID: {id}");

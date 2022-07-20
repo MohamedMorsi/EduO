@@ -14,8 +14,13 @@ namespace EduO.ORM
     {
         private readonly ApplicationDbContext _context;
 
-        public IBaseRepository<Student> Students { get; private set; }
         public IBaseRepository<Grade> Grades { get; private set; }
+        public IBaseRepository<Student> Students { get; private set; }
+        public IBaseRepository<Course> Coursees => throw new NotImplementedException();
+        public IBaseRepository<Fee> Fees => throw new NotImplementedException();
+        public IBaseRepository<Teacher> Teachers => throw new NotImplementedException();
+        public IBaseRepository<User> Users => throw new NotImplementedException();
+
         //public IGradesRepository Grades { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)

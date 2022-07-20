@@ -13,8 +13,8 @@ namespace EduO.ORM.Repositories.Contracts
         Task<IEnumerable<T>> GetAllAsync();
         //////////////////////
 
-        T GetById(params object?[]? keyValues);
-        Task<T> GetByIdAsync(params object?[]? keyValues);
+        T GetById(params object?[]? id);
+        Task<T> GetByIdAsync(params object?[]? id);
         //////////////////////
 
         T Add(T entity);
