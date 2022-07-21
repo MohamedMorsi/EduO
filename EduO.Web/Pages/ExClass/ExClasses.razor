@@ -1,24 +1,21 @@
 ﻿@page "/exclasses"
 
-<div class="row">
-    <div class="col-md-10">
-        @*Place for search and sort*@
-    </div>
-    <div class="col-md-2">
-        <a href="/exclasses/createexClass">Create ExClass</a>
-    </div>
+<MudPaper Class="pa-10 ma-2" >
+   
+    
+<div class="row" style="margin-bottom:10px;">
+    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="CreateNew"/>
+   
+    
 </div>
+
 <div class="row">
     <div class="col">
-        @*Place for exclass*@
          <ExClassTable ExClasses="ExClassDtoList" OnDeleted="DeleteExClass" />
     </div>
 </div>
-<div class="row">
-    <div class="col">
-        @*Place for pagination*@
-    </div>
-</div>
+
+</MudPaper>
 
 
 @code {
@@ -37,13 +34,18 @@
         //just for testing
         foreach (var exclass in ExClassDtoList)
         {
-            Console.WriteLine(exclass.Name);
+            //Console.WriteLine(exclass.Name);
         }
     }
 
     private async Task GetExclasses()
     {
         ExClassDtoList = await ExClassService.GetAllAsync();
+    }
+
+      private async Task CreateNew()
+    {
+       NavigationManager.NavigateTo("exclasses/createexClass");
     }
 
     private async Task DeleteExClass(int id)
