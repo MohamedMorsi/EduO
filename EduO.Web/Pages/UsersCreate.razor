@@ -27,7 +27,7 @@
      private SuccessNotification _notification;
 
       [Inject]
-    public IGradeService GradeService { get; set; }
+    public IBaseService<GradeDto> GradeService { get; set; }
 
     private async Task Create()
     {

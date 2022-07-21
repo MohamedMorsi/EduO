@@ -1,53 +1,35 @@
 ﻿@page "/grades/creategrade"
 
-<h2>Create Product Form</h2>
+<h2>Create Garde Form</h2>
 <EditForm Model="_grade" OnValidSubmit="Create" class="card card-body bg-light mt-5">
-     <DataAnnotationsValidator />
-     <ValidationSummary />
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="mb-3 row">
         <label for="name" class="col-md-2 col-form-label">Name:</label>
         <div class="col-md-10">
             <InputText id="name" class="form-control" @bind-Value="_grade.Name" />
-             <ValidationMessage For="@(() => _grade.Name)" />
+            <ValidationMessage For="@(() => _grade.Name)" />
         </div>
     </div>
-  @*  <div class="mb-3 row">
-        <label for="supplier" class="col-md-2 col-form-label">Supplier:</label>
-        <div class="col-md-10">
-            <InputText id="supplier" class="form-control" @bind-Value="_grade.Supplier" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="price" class="col-md-2 col-form-label">Price:</label>
-        <div class="col-md-10">
-            <InputNumber id="price" class="form-control" @bind-Value="_grade.Price" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="image" class="col-md-2 col-form-label">Image:</label>
-        <div class="col-md-10">
-            <InputText id="image" class="form-control" @bind-Value="_grade.ImageUrl" />
-        </div>
-    </div>*@
     <div class="row">
         <div class="col-md-12 text-right">
             <button type="submit" class="btn btn-success">Create</button>
         </div>
     </div>
 </EditForm>
-<SuccessNotification @ref="_notification"/>
+<SuccessNotification @ref="_notification" />
 
 
 @code {
-     private GradeDto _grade = new GradeDto();
-     private SuccessNotification _notification;
+    private GradeDto _grade = new GradeDto();
+    private SuccessNotification _notification;
 
-      [Inject]
-    public IGradeService GradeService { get; set; }
+    [Inject]
+    public IBaseService<GradeDto> GradeService { get; set; }
 
     private async Task Create()
     {
-         await GradeService.CreateGrade(_grade);
-          _notification.Show();
+        await GradeService.CreateAsync(_grade);
+        _notification.Show();
     }
 }

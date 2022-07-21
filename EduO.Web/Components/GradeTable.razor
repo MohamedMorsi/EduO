@@ -3,10 +3,7 @@
     <table class="table">
         <thead>
             <tr>
-                @*<th scope="col"></th>*@
                 <th scope="col">Name</th>
-            @*    <th scope="col">Supplier</th>
-                <th scope="col">Price</th>*@
                 <th scope="col">Update</th>
                 <th scope="col">Delete</th>
             </tr>
@@ -15,19 +12,11 @@
             @foreach (var grade in Grades)
             {
                 <tr>
-                   @* <td>
-                        <img src="@grade.ImageUrl" alt="grade image" style="width:100px;" />
-                    </td>*@
+                 
                     <td class="align-middle">
                         @grade.Name
                     </td>
-                  @*  <td class="align-middle">
-                        @grade.Supplier
-                    </td>
-                    <td class="align-middle">
-                        $@grade.Price
-                    </td>*@
-
+                  
                     <td class="align-middle">
                         <button type="button" class="btn btn-info" @onclick="() => RedirectToUpdate(grade.Id)">Update</button>
                     </td>

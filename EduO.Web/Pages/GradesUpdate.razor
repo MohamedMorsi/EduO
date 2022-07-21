@@ -14,29 +14,6 @@
             </div>
         </div>
 
-       @* <div class="form-group row">
-            <label for="supplier" class="col-md-2 col-form-label">Supplier:</label>
-            <div class="col-md-10">
-                <InputText id="supplier" class="form-control" @bind-Value="_product.Supplier" />
-                <ValidationMessage For="@(() => _product.Supplier)" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="price" class="col-md-2 col-form-label">Price:</label>
-            <div class="col-md-10">
-                <InputNumber id="price" class="form-control" @bind-Value="_product.Price" />
-                <ValidationMessage For="@(() => _product.Price)" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="image" class="col-md-2 col-form-label">Image:</label>
-            <div class="col-md-10">
-                <ImageUpload ImgUrl="@_product.ImageUrl" OnChange="AssignImageUrl" />
-            </div>
-        </div>
-*@
         <div class="row">
             <div class="col-md-12 text-right">
                 <button type="submit" class="btn btn-success">Update</button>
@@ -50,20 +27,19 @@
     private GradeDto _grade;
     private SuccessNotification _notification;
     [Inject]
-    IGradeService GradeService { get; set; }
+    IBaseService<GradeDto> GradeService { get; set; }
 
     [Parameter]
     public int id { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
-        _grade = await GradeService.GetGrade(id);
+        _grade = await GradeService.GetByIdAsync(id);
     }
 
     private async Task Update()
     {
-        await GradeService.UpdateGrade(_grade);
+        await GradeService.Update(_grade);
         _notification.Show();
     }
-    @*private void AssignImageUrl(string imgUrl) => _grade.ImageUrl = imgUrl;*@
 }

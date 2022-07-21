@@ -10,7 +10,7 @@
 </div>
 <div class="row">
     <div class="col">
-        @*Place for products*@
+        @*Place for grades*@
          <GradeTable Grades="GradeDtoList" OnDeleted="DeleteGrade" />
     </div>
 </div>
@@ -23,17 +23,17 @@
 
 @code {
 
-    public List<GradeDto> GradeDtoList { get; set; } = new List<GradeDto>();
-
     [Inject]
-    public IGradeService GradeService { get; set; }
+    public IBaseService<GradeDto> GradeService { get; set; }
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
+    public List<GradeDto> GradeDtoList { get; set; } = new List<GradeDto>();
+
     protected async override Task OnInitializedAsync()
     {
-        GradeDtoList = await GradeService.GetGrades();
+        GradeDtoList =await GradeService.GetAllAsync();
         //just for testing
         foreach (var product in GradeDtoList)
         {
@@ -43,17 +43,15 @@
 
     private async Task GetGrades()
     {
-        GradeDtoList = await GradeService.GetGrades();
+        GradeDtoList = await GradeService.GetAllAsync();
     }
-
 
     private async Task DeleteGrade(int id)
     {
-        await GradeService.DeleteGrade(id);
+        await GradeService.Delete(id);
         //_productParameters.PageNumber = 1;
         await GetGrades();
         StateHasChanged();
         //NavigationManager.NavigateTo("/grades");
-        
     }
 }

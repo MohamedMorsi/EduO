@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using EduO.Core.Dtos;
 using EduO.Web;
 using EduO.Web.AuthProviders;
 using EduO.Web.HttpServices.Contract;
@@ -19,7 +20,9 @@ builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44325/api/") }.EnableIntercept(sp));
 
-builder.Services.AddScoped<IGradeService, GradeService>();
+//builder.Services.AddScoped<IGradeService, GradeService>();
+builder.Services.AddScoped<IBaseService<ExClassDto>, ExClassService>();
+builder.Services.AddScoped<IBaseService<GradeDto>, GradeService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddMudServices();

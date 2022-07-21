@@ -1,0 +1,57 @@
+﻿@page "/exclasses"
+
+<div class="row">
+    <div class="col-md-10">
+        @*Place for search and sort*@
+    </div>
+    <div class="col-md-2">
+        <a href="/exclasses/createexClass">Create ExClass</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @*Place for exclass*@
+         <ExClassTable ExClasses="ExClassDtoList" OnDeleted="DeleteExClass" />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @*Place for pagination*@
+    </div>
+</div>
+
+
+@code {
+
+    [Inject]
+    public IBaseService<ExClassDto> ExClassService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public List<ExClassDto> ExClassDtoList { get; set; } = new List<ExClassDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        ExClassDtoList =await ExClassService.GetAllAsync();
+        //just for testing
+        foreach (var exclass in ExClassDtoList)
+        {
+            Console.WriteLine(exclass.Name);
+        }
+    }
+
+    private async Task GetExclasses()
+    {
+        ExClassDtoList = await ExClassService.GetAllAsync();
+    }
+
+    private async Task DeleteExClass(int id)
+    {
+        await ExClassService.Delete(id);
+        //_productParameters.PageNumber = 1;
+        await GetExclasses();
+        StateHasChanged();
+        //NavigationManager.NavigateTo("/exclasses");
+    }
+}

@@ -5,32 +5,32 @@ using System.Text.Json;
 
 namespace EduO.Web.HttpServices.Service
 {
-    public class GradeService : IBaseService<GradeDto>
+    public class ExClassService : IBaseService<ExClassDto>
     {
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
 
-        public GradeService(HttpClient client)
+        public ExClassService(HttpClient client)
         {
             _client = client;
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task<List<GradeDto>> GetAllAsync()
+        public async Task<List<ExClassDto>> GetAllAsync()
         {
-            var response = await _client.GetAsync("grades/getallasync");
+            var response = await _client.GetAsync("exClass/getallasync");
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(content);
             }
-            var grades = JsonSerializer.Deserialize<List<GradeDto>>(content, _options);
-            return grades;
+            var ExClassDtos = JsonSerializer.Deserialize<List<ExClassDto>>(content, _options);
+            return ExClassDtos;
         }
 
-        public async Task<GradeDto> GetByIdAsync(params object?[]? id)
+        public async Task<ExClassDto> GetByIdAsync(params object?[]? id)
         {
-            var url = Path.Combine($"grades/getbyidasync/{id}");
+            var url = Path.Combine($"exClass/getbyidasync/{id}");
 
             var response = await _client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
@@ -39,16 +39,16 @@ namespace EduO.Web.HttpServices.Service
                 throw new ApplicationException(content);
             }
 
-            var grade = JsonSerializer.Deserialize<GradeDto>(content, _options);
-            return grade;
+            var ExClassDtos = JsonSerializer.Deserialize<ExClassDto>(content, _options);
+            return ExClassDtos;
         }
 
-        public async Task CreateAsync(GradeDto entity)
+        public async Task CreateAsync(ExClassDto entity)
         {
             var content = JsonSerializer.Serialize(entity);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
 
-            var postResult = await _client.PostAsync("grades/createasync", bodyContent);
+            var postResult = await _client.PostAsync("exClass/createasync", bodyContent);
             var postContent = await postResult.Content.ReadAsStringAsync();
 
             if (!postResult.IsSuccessStatusCode)
@@ -57,7 +57,7 @@ namespace EduO.Web.HttpServices.Service
             }
         }
 
-        public async Task Update(GradeDto entity)
+        public async Task Update(ExClassDto entity)
         {
             var content = JsonSerializer.Serialize(entity);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -74,7 +74,7 @@ namespace EduO.Web.HttpServices.Service
 
         public async Task Delete(params object?[]? id)
         {
-            var url = Path.Combine($"grades/delete/{id}");
+            var url = Path.Combine($"exClass/delete/{id}");
 
             var deleteResult = await _client.DeleteAsync(url);
             var deleteContent = await deleteResult.Content.ReadAsStringAsync();

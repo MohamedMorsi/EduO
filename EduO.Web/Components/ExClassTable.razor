@@ -1,0 +1,81 @@
+﻿@if (ExClasses.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @*<th scope="col"></th>*@
+                <th scope="col">Name</th>
+            @*    <th scope="col">Supplier</th>
+                <th scope="col">Price</th>*@
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var exClass in ExClasses)
+            {
+                <tr>
+                   @* <td>
+                        <img src="@grade.ImageUrl" alt="grade image" style="width:100px;" />
+                    </td>*@
+                    <td class="align-middle">
+                        @exClass.Name
+                    </td>
+                  @*  <td class="align-middle">
+                        @grade.Supplier
+                    </td>
+                    <td class="align-middle">
+                        $@grade.Price
+                    </td>*@
+
+                    <td class="align-middle">
+                        <button type="button" class="btn btn-info" @onclick="() => RedirectToUpdate(exClass.Id)">Update</button>
+                    </td>
+
+                    <td class="align-middle">
+                        <button type="button" class="btn btn-danger" @onclick="() => Delete(exClass.Id)">Delete</button>
+                    </td>
+                </tr>
+             }
+            </tbody>
+    </table>
+}
+else
+{
+    <span>
+        Loading exclass...
+    </span>
+}
+
+@code {
+
+    [Parameter]
+    public List<ExClassDto> ExClasses { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnDeleted { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IJSRuntime Js { get; set; }
+
+    private void RedirectToUpdate(int id)
+    {
+        var url = Path.Combine($"/exclass/updateexclass/{id}");
+        NavigationManager.NavigateTo(url);
+    }
+
+    private async Task Delete(int id)
+    {
+        var exclass = ExClasses.FirstOrDefault(p => p.Id.Equals(id));
+
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {exclass.Name} ExClass?");
+        if (confirmed)
+        {
+            await OnDeleted.InvokeAsync(exclass.Id);
+        }
+    }
+
+}
