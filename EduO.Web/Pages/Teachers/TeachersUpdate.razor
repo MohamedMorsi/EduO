@@ -1,15 +1,15 @@
-﻿@page "/grades/updategrade/{id:int}"
+﻿@page "/teachers/updateteacher/{id}"
 
-<h2>Update Grade Form</h2>
+<h2>Update Teacher Form</h2>
 
-<EditForm Model="@_grade" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_teacher" OnValidSubmit="OnValidSubmit">
 <DataAnnotationsValidator/>
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudCard>
             <MudCardContent>
                 <MudTextField Label="Name" HelperText="'Name' is required field"
-                              @bind-Value="_grade.Name" For="@(() => _grade.Name)"/>
+                              @bind-Value="_teacher.Name" For="@(() => _teacher.Name)"/>
                @* <MudTextField Label="Email" Class="mt-3"
                               @bind-Value="model.Email" For="@(() => model.Email)"/>
                 <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
@@ -44,34 +44,34 @@
 
 @code {
     [Inject]
-    IBaseService<GradeDto> GradeService { get; set; }
+    IBaseService<TeacherDto> TeacherService { get; set; }
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     [Parameter]
-    public int id { get; set; }
+    public string id { get; set; }
 
-    private GradeDto _grade = new GradeDto();
+    private TeacherDto _teacher = new TeacherDto();
 
     bool success;
 
     protected async override Task OnInitializedAsync()
     {
-        _grade = await GradeService.GetByIdAsync(id);
+        _teacher = await TeacherService.GetByIdAsync(id);
     }
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await GradeService.Update(_grade);
+        await TeacherService.Update(_teacher);
         success = true;
         //StateHasChanged();
-        NavigationManager.NavigateTo("/grades");
+        NavigationManager.NavigateTo("/teachers");
     }
 
     //private async Task Update()
     //{
-    //    await GradeService.Update(_grade);
+    //    await TeacherService.Update(_Teacher);
     //    _notification.Show();
     //}
 }

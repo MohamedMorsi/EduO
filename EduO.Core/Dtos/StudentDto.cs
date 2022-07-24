@@ -4,8 +4,9 @@ namespace EduO.Core.Dtos
 {
     public class StudentDto
     {
-        [MaxLength(250)]
+        public Guid Id { get; set; }
 
+        [MaxLength(250)]
         public string Name { get; set; }
         public string Mobile_Number { get; set; }
         public string Email { get; set; }

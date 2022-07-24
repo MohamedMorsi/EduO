@@ -1,15 +1,15 @@
-﻿@page "/grades/creategrade"
+﻿@page "/students/createstudent"
 
-<h2>Create Garde Form</h2>
+<h2>Create Student Form</h2>
 
-<EditForm Model="@_grade" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_student" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <MudGrid>
         <MudItem xs="12" sm="7">
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Name" HelperText="'Name' is required field"
-                                  @bind-Value="_grade.Name" For="@(() => _grade.Name)" />
+                                  @bind-Value="_student.Name" For="@(() => _student.Name)" />
                     @* <MudTextField Label="Email" Class="mt-3"
                         @bind-Value="model.Email" For="@(() => model.Email)"/>
                         <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
@@ -41,24 +41,25 @@
 </EditForm>
 
 @code {
+
     [Inject]
-    public IBaseService<GradeDto> GradeService { get; set; }
+    public IBaseService<StudentDto> StudentService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-    private GradeDto _grade = new GradeDto();
+    private StudentDto _student = new StudentDto();
     bool success;
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await GradeService.CreateAsync(_grade);
+        await StudentService.CreateAsync(_student);
         success = true;
         StateHasChanged();
-        NavigationManager.NavigateTo("/grades");
+        NavigationManager.NavigateTo("/students");
     }
 
     //private async Task Create()
     //{
-    //    await GradeService.CreateAsync(_grade);
+    //    await StudentService.CreateAsync(_Student);
     //    _notification.Show();
     //}
 }

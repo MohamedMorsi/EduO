@@ -1,8 +1,8 @@
 ﻿@inject IDialogService DialogService
 
-@if (Grades.Count > 0)
+@if (Teachers.Count > 0)
 {
-    <MudTable Items="@Grades" Hover="true" FixedHeader="true" Height="@(Grades.Count > 0 ? "400px":"")">
+    <MudTable Items="@Teachers" Hover="true" FixedHeader="true" Height="@(Teachers.Count > 0 ? "400px":"")">
         <HeaderContent>
             <MudTh>#</MudTh>
             <MudTh>Name</MudTh>
@@ -13,9 +13,9 @@
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Actions">
                 <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Edit"  Size="Size.Small"
-                    OnClick="@(()=>RedirectToUpdate(@context.Id))"/>
+                    OnClick="@(()=>RedirectToUpdate(@context.Id.ToString()))"/>
                 <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" 
-                    OnClick="@(()=>DeleteDialog(@context.Id))"/>
+                    OnClick="@(()=>DeleteDialog(@context.Id.ToString()))"/>
             </MudTd>
         </RowTemplate>
         <PagerContent>
@@ -39,30 +39,30 @@ else
     public IJSRuntime Js { get; set; }
 
     [Parameter]
-    public List<GradeDto> Grades { get; set; }
+    public List<TeacherDto> Teachers { get; set; }
 
     [Parameter]
-    public EventCallback<int> OnDeleted { get; set; }
+    public EventCallback<string> OnDeleted { get; set; }
 
 
-    private void RedirectToUpdate(int id)
+    private void RedirectToUpdate(string id)
     {
-        var url = Path.Combine($"/grades/updategrade/{id}");
+        var url = Path.Combine($"/teachers/updateteacher/{id}");
         NavigationManager.NavigateTo(url);
     }
 
-    private async Task Delete(int id)
+    private async Task Delete(string id)
     {
-        var grade = Grades.FirstOrDefault(p => p.Id.Equals(id));
+        var teacher = Teachers.FirstOrDefault(p => p.Id.Equals(id));
 
         //var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {grade.Name} grade?");
         //if (confirmed)
         //{
-            await OnDeleted.InvokeAsync(grade.Id);
+            await OnDeleted.InvokeAsync(id);
         //}
     }
 
-       private async Task DeleteDialog(int id)
+       private async Task DeleteDialog(string id)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");

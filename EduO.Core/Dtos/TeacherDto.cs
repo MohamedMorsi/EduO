@@ -11,6 +11,8 @@ namespace EduO.Core.Dtos
 {
     public class TeacherDto:BaseModelII
     {
+        public Guid Id { get; set; }
+
         [MaxLength(250)]
         public string Name { get; set; }
         public string Mobile_Number { get; set; }

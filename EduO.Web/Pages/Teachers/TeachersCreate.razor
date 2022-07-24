@@ -1,15 +1,15 @@
-﻿@page "/grades/creategrade"
+﻿@page "/teachers/createteacher"
 
-<h2>Create Garde Form</h2>
+<h2>Create Teacher Form</h2>
 
-<EditForm Model="@_grade" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_teacher" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <MudGrid>
         <MudItem xs="12" sm="7">
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Name" HelperText="'Name' is required field"
-                                  @bind-Value="_grade.Name" For="@(() => _grade.Name)" />
+                                  @bind-Value="_teacher.Name" For="@(() => _teacher.Name)" />
                     @* <MudTextField Label="Email" Class="mt-3"
                         @bind-Value="model.Email" For="@(() => model.Email)"/>
                         <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
@@ -42,18 +42,18 @@
 
 @code {
     [Inject]
-    public IBaseService<GradeDto> GradeService { get; set; }
+    public IBaseService<TeacherDto> TeacherService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-    private GradeDto _grade = new GradeDto();
+    private TeacherDto _teacher = new TeacherDto();
     bool success;
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await GradeService.CreateAsync(_grade);
+        await TeacherService.CreateAsync(_teacher);
         success = true;
         StateHasChanged();
-        NavigationManager.NavigateTo("/grades");
+        NavigationManager.NavigateTo("/teachers");
     }
 
     //private async Task Create()

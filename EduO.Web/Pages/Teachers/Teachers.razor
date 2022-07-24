@@ -1,6 +1,6 @@
-﻿@page "/grades"
+﻿@page "/teachers"
 
-<h2>Grades</h2>
+<h2>Teachers</h2>
 
 <MudPaper Class="pa-5 ma-1">
 
@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col">
-            <GradeTable Grades="GradeDtoList" OnDeleted="DeleteGrade" />
+            <TeacherTable Teachers="TeacherDtoList" OnDeleted="DeleteTeacher" />
         </div>
     </div>
 
@@ -21,39 +21,39 @@
 @code {
 
     [Inject]
-    public IBaseService<GradeDto> GradeService { get; set; }
+    public IBaseService<TeacherDto> TeacherService { get; set; }
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
-    public List<GradeDto> GradeDtoList { get; set; } = new List<GradeDto>();
+    public List<TeacherDto> TeacherDtoList { get; set; } = new List<TeacherDto>();
 
     protected async override Task OnInitializedAsync()
     {
-        GradeDtoList =await GradeService.GetAllAsync();
+        TeacherDtoList =await TeacherService.GetAllAsync();
         //just for testing
-        foreach (var product in GradeDtoList)
+        foreach (var product in TeacherDtoList)
         {
             Console.WriteLine(product.Name);
         }
     }
 
-    private async Task GetGrades()
+    private async Task GetTeachers()
     {
-        GradeDtoList = await GradeService.GetAllAsync();
+        TeacherDtoList = await TeacherService.GetAllAsync();
     }
 
      private async Task CreateNew()
     {
-        NavigationManager.NavigateTo("grades/creategrade");
+        NavigationManager.NavigateTo("teachers/createteacher");
     }
 
-    private async Task DeleteGrade(int id)
+    private async Task DeleteTeacher(string id)
     {
-        await GradeService.Delete(id);
+        await TeacherService.Delete(id);
         //_productParameters.PageNumber = 1;
-        await GetGrades();
+        await GetTeachers();
         StateHasChanged();
-        //NavigationManager.NavigateTo("/grades");
+        //NavigationManager.NavigateTo("/Teachers");
     }
 }
