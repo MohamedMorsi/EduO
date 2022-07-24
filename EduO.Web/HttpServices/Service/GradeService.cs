@@ -28,7 +28,7 @@ namespace EduO.Web.HttpServices.Service
             return grades;
         }
 
-        public async Task<GradeDto> GetByIdAsync(params object?[]? id)
+        public async Task<GradeDto> GetByIdAsync(object id)
         {
             var url = Path.Combine($"grades/getbyidasync/{id}");
 
@@ -61,7 +61,7 @@ namespace EduO.Web.HttpServices.Service
         {
             var content = JsonSerializer.Serialize(entity);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var url = Path.Combine("grades/update", entity.Id.ToString());
+            var url = Path.Combine("grades/UpdateAsync", entity.Id.ToString());
 
             var putResult = await _client.PutAsync(url, bodyContent);
             var putContent = await putResult.Content.ReadAsStringAsync();
@@ -72,9 +72,9 @@ namespace EduO.Web.HttpServices.Service
             }
         }
 
-        public async Task Delete(params object?[]? id)
+        public async Task Delete(object id)
         {
-            var url = Path.Combine($"grades/delete/{id}");
+            var url = Path.Combine($"grades/DeleteAsync/{id}");
 
             var deleteResult = await _client.DeleteAsync(url);
             var deleteContent = await deleteResult.Content.ReadAsStringAsync();

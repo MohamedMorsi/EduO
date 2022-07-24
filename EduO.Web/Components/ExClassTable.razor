@@ -1,21 +1,29 @@
-﻿@if (ExClasses.Count > 0)
+﻿@inject IDialogService DialogService
+
+@if (ExClasses.Count > 0)
 {
-   <MudTable Items="@ExClasses.Take(10)" Hover="true" Breakpoint="Breakpoint.Sm" Loading="false" LoadingProgressColor="Color.Info">
-    <HeaderContent>
-        <MudTh>#</MudTh>
-        <MudTh>Name</MudTh>
-        <MudTh>Actions</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Nr">@context.Id</MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Actions"> 
-            <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" />
-            <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" />
-        </MudTd>
-    </RowTemplate>
-</MudTable>
+    <MudTable Items="@ExClasses" Hover="true" FixedHeader="true" Height="@(ExClasses.Count > 0 ? "400px":"")">
+        <HeaderContent>
+            <MudTh>#</MudTh>
+            <MudTh>Name</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="#">@context.Id</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Actions">
+                <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Edit"  Size="Size.Small"
+                    OnClick="@(()=>RedirectToUpdate(@context.Id))"/>
+                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" 
+                    OnClick="@(()=>DeleteDialog(@context.Id))"/>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
 }
+
 else
 {
     <span>
@@ -25,21 +33,21 @@ else
 
 @code {
 
-    [Parameter]
-    public List<ExClassDto> ExClasses { get; set; }
-
-    [Parameter]
-    public EventCallback<int> OnDeleted { get; set; }
-
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     [Inject]
     public IJSRuntime Js { get; set; }
 
+    [Parameter]
+    public List<ExClassDto> ExClasses { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnDeleted { get; set; }
+
     private void RedirectToUpdate(int id)
     {
-        var url = Path.Combine($"/exclass/updateexclass/{id}");
+        var url = Path.Combine($"/exclasses/updateexclass/{id}");
         NavigationManager.NavigateTo(url);
     }
 
@@ -47,11 +55,33 @@ else
     {
         var exclass = ExClasses.FirstOrDefault(p => p.Id.Equals(id));
 
-        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {exclass.Name} ExClass?");
-        if (confirmed)
+        //var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {exclass.Name} ExClass?");
+        //if (confirmed)
+        //{
+        await OnDeleted.InvokeAsync(id);
+        //}
+    }
+
+    private async Task DeleteDialog(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<Dialog>("Delete", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
         {
-            await OnDeleted.InvokeAsync(exclass.Id);
+            await Delete(id);
         }
     }
+
+
 
 }

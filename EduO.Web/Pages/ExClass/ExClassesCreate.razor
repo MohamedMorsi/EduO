@@ -1,53 +1,69 @@
 ﻿@page "/exclasses/createexclass"
+@using System.ComponentModel.DataAnnotations
 
 <h2>Create Exclass Form</h2>
-<EditForm Model="_exclass" OnValidSubmit="Create" class="card card-body bg-light mt-5">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="mb-3 row">
-        <label for="name" class="col-md-2 col-form-label">Name:</label>
-        <div class="col-md-10">
-            <InputText id="name" class="form-control" @bind-Value="_exclass.Name" />
-            <ValidationMessage For="@(() => _exclass.Name)" />
-        </div>
-    </div>
-    @*  <div class="mb-3 row">
-        <label for="supplier" class="col-md-2 col-form-label">Supplier:</label>
-        <div class="col-md-10">
-        <InputText id="supplier" class="form-control" @bind-Value="_grade.Supplier" />
-        </div>
-        </div>
-        <div class="mb-3 row">
-        <label for="price" class="col-md-2 col-form-label">Price:</label>
-        <div class="col-md-10">
-        <InputNumber id="price" class="form-control" @bind-Value="_grade.Price" />
-        </div>
-        </div>
-        <div class="mb-3 row">
-        <label for="image" class="col-md-2 col-form-label">Image:</label>
-        <div class="col-md-10">
-        <InputText id="image" class="form-control" @bind-Value="_grade.ImageUrl" />
-        </div>
-        </div>*@
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <button type="submit" class="btn btn-success">Create</button>
-        </div>
-    </div>
-</EditForm>
-<SuccessNotification @ref="_notification" />
 
+
+<EditForm Model="@_exclass" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Name" HelperText="'Name' is required field"
+                              @bind-Value="_exclass.Name" For="@(() => _exclass.Name)"/>
+               @* <MudTextField Label="Email" Class="mt-3"
+                              @bind-Value="model.Email" For="@(() => model.Email)"/>
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+                <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                              @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>*@
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+            <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+            @if (success)
+            {
+                <MudText Color="Color.Success">Success</MudText>
+            }
+            else
+            {
+                <MudText Color="@Color.Error">
+                    <ValidationSummary />
+                </MudText>
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+</EditForm>
 
 @code {
-    private ExClassDto _exclass = new ExClassDto();
-    private SuccessNotification _notification;
-
     [Inject]
     public IBaseService<ExClassDto> ExClassService { get; set; }
 
-    private async Task Create()
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    private ExClassDto _exclass = new ExClassDto();
+
+	bool success;
+
+    private async Task OnValidSubmit(EditContext context)
     {
         await ExClassService.CreateAsync(_exclass);
-        _notification.Show();
+        success = true;
+        StateHasChanged();
+        NavigationManager.NavigateTo("/exclasses");
     }
+
+    //private async Task Create()
+    //{
+    //    await ExClassService.CreateAsync(_exclass);
+    //    _notification.Show();
+    //}
 }

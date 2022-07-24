@@ -1,70 +1,81 @@
 ﻿@page "/exclasses/updateexclass/{id:int}"
 
-<h2>Update ExClass Form</h2>
+<h2>Update Exclass Form</h2>
 
-@if(_exclass != null)
-{
-    <EditForm Model="_exclass" OnValidSubmit="Update" class="card card-body bg-light mt-5">
-        <DataAnnotationsValidator />
-        <div class="form-group row">
-            <label for="name" class="col-md-2 col-form-label">Name:</label>
-            <div class="col-md-10">
-                <InputText id="name" class="form-control" @bind-Value="_exclass.Name" />
-                <ValidationMessage For="@(() => _exclass.Name)" />
-            </div>
-        </div>
 
-       @* <div class="form-group row">
-            <label for="supplier" class="col-md-2 col-form-label">Supplier:</label>
-            <div class="col-md-10">
-                <InputText id="supplier" class="form-control" @bind-Value="_product.Supplier" />
-                <ValidationMessage For="@(() => _product.Supplier)" />
-            </div>
-        </div>
+<EditForm Model="@_exclass" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Name" HelperText="'Name' is required field"
+                              @bind-Value="_exclass.Name" For="@(() => _exclass.Name)"/>
+               @* <MudTextField Label="Email" Class="mt-3"
+                              @bind-Value="model.Email" For="@(() => model.Email)"/>
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+                <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                              @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>*@
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+            <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+            @if (success)
+            {
+                <MudText Color="Color.Success">Success</MudText>
+            }
+            else
+            {
+                <MudText Color="@Color.Error">
+                    <ValidationSummary />
+                </MudText>
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+</EditForm>
 
-        <div class="form-group row">
-            <label for="price" class="col-md-2 col-form-label">Price:</label>
-            <div class="col-md-10">
-                <InputNumber id="price" class="form-control" @bind-Value="_product.Price" />
-                <ValidationMessage For="@(() => _product.Price)" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="image" class="col-md-2 col-form-label">Image:</label>
-            <div class="col-md-10">
-                <ImageUpload ImgUrl="@_product.ImageUrl" OnChange="AssignImageUrl" />
-            </div>
-        </div>
-*@
-        <div class="row">
-            <div class="col-md-12 text-right">
-                <button type="submit" class="btn btn-success">Update</button>
-            </div>
-        </div>
-    </EditForm>
-    <SuccessNotification @ref="_notification" />
-}
 
 @code {
 
-    private ExClassDto _exclass;
-    private SuccessNotification _notification;
     [Inject]
     IBaseService<ExClassDto> ExClassService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
 
     [Parameter]
     public int id { get; set; }
 
+    bool success;
+
+    private ExClassDto _exclass = new ExClassDto();
+
     protected async override Task OnInitializedAsync()
     {
         _exclass = await ExClassService.GetByIdAsync(id);
+        
     }
 
-    private async Task Update()
+    private async Task OnValidSubmit(EditContext context)
     {
         await ExClassService.Update(_exclass);
-        _notification.Show();
+        success = true;
+        //StateHasChanged();
+        NavigationManager.NavigateTo("exclasses");
     }
+
+
+    //private async Task Update()
+    //{
+    //    await ExClassService.Update(_exclass);
+    //    _notification.Show();
+    //}
     @*private void AssignImageUrl(string imgUrl) => _grade.ImageUrl = imgUrl;*@
 }

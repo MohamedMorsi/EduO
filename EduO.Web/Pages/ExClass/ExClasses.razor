@@ -1,19 +1,17 @@
 ﻿@page "/exclasses"
 
-<MudPaper Class="pa-10 ma-2" >
-   
-    
-<div class="row" style="margin-bottom:10px;">
-    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="CreateNew"/>
-   
-    
-</div>
+<MudPaper Class="pa-5 ma-1">
 
-<div class="row">
-    <div class="col">
-         <ExClassTable ExClasses="ExClassDtoList" OnDeleted="DeleteExClass" />
+    <div class="row" style="margin-bottom:10px;">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="CreateNew"  Size="Size.Small" />
+
     </div>
-</div>
+
+    <div class="row">
+        <div class="col">
+            <ExClassTable ExClasses="ExClassDtoList" OnDeleted="DeleteExClass" />
+        </div>
+    </div>
 
 </MudPaper>
 
@@ -30,7 +28,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        ExClassDtoList =await ExClassService.GetAllAsync();
+        ExClassDtoList = await ExClassService.GetAllAsync();
         //just for testing
         foreach (var exclass in ExClassDtoList)
         {
@@ -43,9 +41,9 @@
         ExClassDtoList = await ExClassService.GetAllAsync();
     }
 
-      private async Task CreateNew()
+    private async Task CreateNew()
     {
-       NavigationManager.NavigateTo("exclasses/createexClass");
+        NavigationManager.NavigateTo("exclasses/createexClass");
     }
 
     private async Task DeleteExClass(int id)
@@ -56,4 +54,5 @@
         StateHasChanged();
         //NavigationManager.NavigateTo("/exclasses");
     }
+
 }

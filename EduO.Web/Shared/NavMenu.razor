@@ -4,15 +4,23 @@
         <MudText Typo="Typo.h5" Color="Color.Primary" Style="margin-top:10px; margin-left:15px;">Edu O</MudText>
     </MudDrawerHeader>
     <MudNavMenu>
-        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Home">Home</MudNavLink>
-        <MudNavLink Href="/counter" Icon="@Icons.Filled.Storage">Counter</MudNavLink>
-        <MudNavLink Href="/exclasses" Icon="@Icons.Filled.Storage">ExClass</MudNavLink>
-        <MudNavLink Href="/grades" Icon="@Icons.Filled.Storage">Grades</MudNavLink>
-        <MudNavLink Href="/fetchdata" Icon="@Icons.Filled.Storage">FetchData</MudNavLink>
-        <MudNavGroup Title="Expanding" Icon="@Icons.Filled.DashboardCustomize" Expanded="true">
+        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">DashBoard</MudNavLink>
+        
+        <MudNavGroup Title="Admin" Icon="@Icons.Filled.DashboardCustomize" Expanded="true">
+            <MudNavLink Href="/teachers" Icon="@Icons.Filled.Storage">Teachers</MudNavLink>
+            <MudNavLink Href="/grades" Icon="@Icons.Filled.Storage">Gardes</MudNavLink>
+            <MudNavLink Href="students" Icon="@Icons.Filled.Storage">Students</MudNavLink>
+            <MudNavLink Href="/fees" Icon="@Icons.Filled.Storage">Fees</MudNavLink>
+        </MudNavGroup>
+
+
+        <MudNavGroup Title="Example" Icon="@Icons.Filled.DashboardCustomize" Expanded="true">
             <MudNavLink Href="#" Icon="@Icons.Filled.Camera">Photos</MudNavLink>
             <MudNavLink Href="#" Icon="@Icons.Filled.Celebration">Party</MudNavLink>
         </MudNavGroup>
+
+        <MudNavLink Href="/exclasses" Icon="@Icons.Filled.Storage">ExClass</MudNavLink>
+        
     </MudNavMenu>
 </MudDrawer>
 
