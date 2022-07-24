@@ -83,8 +83,9 @@ builder.Services.AddTransient<IAuthService, AuthService>();
 //Services
 builder.Services.AddTransient<IBaseService<ExClass>, ExClassService>();
 builder.Services.AddTransient<IBaseService<Grade>, GradeService>();
+builder.Services.AddTransient<IBaseService<Teacher>, TeacherService>();
+builder.Services.AddTransient<IBaseService<Student>, StudentService>();
 //builder.Services.AddTransient<IGradeService, GradeService>();
-builder.Services.AddTransient<IStudentService, StudentService>();
 
 
 

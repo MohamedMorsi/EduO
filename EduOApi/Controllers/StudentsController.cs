@@ -12,134 +12,101 @@ namespace EduO.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public class StudentsController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IStudentService _studentService;
-        private readonly IBaseService<Grade> _gradeService;
+        private readonly IBaseService<Student> _Studentservice;
 
-        //private new List<string> _allowedExtenstions = new List<string> { ".jpg", ".png" };
-        //private long _maxAllowedPosterSize = 1048576;
-
-        public StudentsController(IStudentService studentService, IBaseService<Grade> gradeService, IMapper mapper)
+        public StudentsController(IBaseService<Student> Studentservice, IMapper mapper)
         {
-            _studentService = studentService;
-            _gradeService = gradeService;
             _mapper = mapper;
+            _Studentservice = Studentservice;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            var Students = _Studentservice.GetAll();
+            var dtos = _mapper.Map<IEnumerable<StudentDto>>(Students);
+
+            return Ok(dtos);
+        }
+
+        [HttpGet("GetAllAsync")]
         public async Task<IActionResult> GetAllAsync()
         {
-            var students = await _studentService.GetAll();
+            var Students = await _Studentservice.GetAllAsync();
+            var dtos = _mapper.Map<IEnumerable<StudentDto>>(Students);
 
-            var data = _mapper.Map<IEnumerable<StudentDetailsDto>>(students);
-
-            return Ok(data);
+            return Ok(dtos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        [HttpGet("GetById/{id}")]
+        public IActionResult GetById(int id)
         {
-            var student = await _studentService.GetById(id);
-
-            if(student == null)
-                return NotFound();
-
-            var dto = _mapper.Map<StudentDetailsDto>(student);
+            var Student = _Studentservice.GetById(id);
+            var dto = _mapper.Map<StudentDto>(Student);
 
             return Ok(dto);
         }
 
-        [HttpGet("GetByGradeId")]
-        public async Task<IActionResult> GetByGradeIdAsync(byte gradeId)
+        [HttpGet("GetByIdAsync/{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var students = await _studentService.GetAll(gradeId);
-            var data = _mapper.Map<IEnumerable<StudentDetailsDto>>(students);
+            var Student = await _Studentservice.GetByIdAsync(id);
+            var dto = _mapper.Map<StudentDto>(Student);
 
-            return Ok(data);
+            return Ok(dto);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
+        public IActionResult Create(StudentDto dto)
+        {
+            var Student = _mapper.Map<Student>(dto);
+
+            _Studentservice.Add(Student);
+
+            return Ok(Student);
+        }
+
+        [HttpPost("CreateAsync")]
         public async Task<IActionResult> CreateAsync(StudentDto dto)
         {
-            //if (dto.Poster == null)
-            //    return BadRequest("Poster is required!");
+            var Student = _mapper.Map<Student>(dto);
 
-            //if (!_allowedExtenstions.Contains(Path.GetExtension(dto.Poster.FileName).ToLower()))
-            //    return BadRequest("Only .png and .jpg images are allowed!");
+            await _Studentservice.AddAsync(Student);
 
-            //if(dto.Poster.Length > _maxAllowedPosterSize)
-            //    return BadRequest("Max allowed size for poster is 1MB!");
-
-            //var isValidGenre = await _gradeService.IsvalidGenre(dto.GradeId);
-
-            //if(!isValidGenre)
-            //    return BadRequest("Invalid genere ID!");
-
-            //using var dataStream = new MemoryStream();
-
-            //await dto.Poster.CopyToAsync(dataStream);
-
-            var student = _mapper.Map<Student>(dto);
-            //movie.Poster = dataStream.ToArray();
-
-            _studentService.Add(student);
-
-            return Ok(student);
+            return Ok(Student);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, StudentDto dto)
+        [HttpPut("UpdateAsync/{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] StudentDto dto)
         {
-            var student = await _studentService.GetById(id);
+            var Student = await _Studentservice.GetByIdAsync(id);
 
-            if (student == null)
-                return NotFound($"No Student was found with ID {id}");
+            if (Student == null)
+                return NotFound($"No Student was found with ID: {id}");
 
-            //var isValidGenre = await _gradeService.IsvalidGenre(dto.GradeId);
+            Student.Name = dto.Name;
 
-            //if (!isValidGenre)
-            //    return BadRequest("Invalid grade ID!");
+            _Studentservice.Update(Student);
 
-            //if(dto.Poster != null)
-            //{
-            //    if (!_allowedExtenstions.Contains(Path.GetExtension(dto.Poster.FileName).ToLower()))
-            //        return BadRequest("Only .png and .jpg images are allowed!");
-
-            //    if (dto.Poster.Length > _maxAllowedPosterSize)
-            //        return BadRequest("Max allowed size for poster is 1MB!");
-
-            //    using var dataStream = new MemoryStream();
-
-            //    await dto.Poster.CopyToAsync(dataStream);
-
-            //    movie.Poster = dataStream.ToArray();
-            //}
-
-            student.Name = dto.Name;
-            student.GradeId = dto.GradeId;
-            //movie.Year = dto.Year;
-            //movie.Storeline = dto.Storeline;
-            //movie.Rate = dto.Rate;
-
-            _studentService.Update(student);
-
-            return Ok(student);
+            return Ok(Student);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteAsync/{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var student = await _studentService.GetById(id);
+            var Student = await _Studentservice.GetByIdAsync(id);
 
-            if (student == null)
-                return NotFound($"No student was found with ID {id}");
+            if (Student == null)
+                return NotFound($"No Student was found with ID: {id}");
 
-            _studentService.Delete(student);
+            _Studentservice.Delete(Student);
 
-            return Ok(student);
+            return Ok(Student);
         }
+
     }
 }

@@ -4,64 +4,64 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduO.Api.Services
 {
-    public class StudentService : IBaseService<Student>
+    public class TeacherService : IBaseService<Teacher>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public StudentService(IUnitOfWork unitOfWork)
+        public TeacherService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         /////////////////////////////////////////////////////////////
         
-        IEnumerable<Student> IBaseService<Student>.GetAll()
+        IEnumerable<Teacher> IBaseService<Teacher>.GetAll()
         {
-            return _unitOfWork.Students.GetAll();
+            return _unitOfWork.Teachers.GetAll();
         }
 
-        public async Task<IEnumerable<Student>> GetAllAsync()
+        public async Task<IEnumerable<Teacher>> GetAllAsync()
         {
-            return await _unitOfWork.Students.GetAllAsync();
-        }
-        /////////////////////////////////////////////////////////////
-
-        public Student GetById(params object?[]? id)
-        {
-           return _unitOfWork.Students.GetById(id);
-        }
-
-        public async Task<Student> GetByIdAsync(params object?[]? id)
-        {
-            return await _unitOfWork.Students.GetByIdAsync(id);
+            return await _unitOfWork.Teachers.GetAllAsync();
         }
         /////////////////////////////////////////////////////////////
 
-        Student IBaseService<Student>.Add(Student entity)
+        public Teacher GetById(params object?[]? id)
+        {
+           return _unitOfWork.Teachers.GetById(id);
+        }
+
+        public async Task<Teacher> GetByIdAsync(params object?[]? id)
+        {
+            return await _unitOfWork.Teachers.GetByIdAsync(id);
+        }
+        /////////////////////////////////////////////////////////////
+
+        Teacher IBaseService<Teacher>.Add(Teacher entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
             entity.UpdatedAt = DateTime.UtcNow;
-            _unitOfWork.Students.Add(entity);
+            _unitOfWork.Teachers.Add(entity);
             _unitOfWork.Save();
 
             return entity;
         }
 
-        public async Task<Student> AddAsync(Student entity)
+        public async Task<Teacher> AddAsync(Teacher entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
             entity.UpdatedAt = DateTime.UtcNow;
-            await _unitOfWork.Students.AddAsync(entity);
+            await _unitOfWork.Teachers.AddAsync(entity);
             _unitOfWork.Save();
 
             return entity;
         }
         /////////////////////////////////////////////////////////////
         ///
-        public Student Update(Student entity)
+        public Teacher Update(Teacher entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;
-            _unitOfWork.Students.Update(entity);
+            _unitOfWork.Teachers.Update(entity);
             _unitOfWork.Save();
 
             return entity;
@@ -69,9 +69,9 @@ namespace EduO.Api.Services
 
         /////////////////////////////////////////////////////////////
         ///
-        public Student Delete(Student entity)
+        public Teacher Delete(Teacher entity)
         {
-            _unitOfWork.Students.Delete(entity);
+            _unitOfWork.Teachers.Delete(entity);
             _unitOfWork.Save();
 
             return entity;

@@ -1,0 +1,59 @@
+﻿@page "/grades"
+
+<h2>Grades</h2>
+
+<MudPaper Class="pa-5 ma-1">
+
+    <div class="row" style="margin-bottom:10px;">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="CreateNew"  Size="Size.Small" />
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <GradeTable Grades="GradeDtoList" OnDeleted="DeleteGrade" />
+        </div>
+    </div>
+
+</MudPaper>
+
+
+@code {
+
+    [Inject]
+    public IBaseService<GradeDto> GradeService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public List<GradeDto> GradeDtoList { get; set; } = new List<GradeDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        GradeDtoList =await GradeService.GetAllAsync();
+        //just for testing
+        foreach (var product in GradeDtoList)
+        {
+            Console.WriteLine(product.Name);
+        }
+    }
+
+    private async Task GetGrades()
+    {
+        GradeDtoList = await GradeService.GetAllAsync();
+    }
+
+     private async Task CreateNew()
+    {
+        NavigationManager.NavigateTo("grades/creategrade");
+    }
+
+    private async Task DeleteGrade(int id)
+    {
+        await GradeService.Delete(id);
+        //_productParameters.PageNumber = 1;
+        await GetGrades();
+        StateHasChanged();
+        //NavigationManager.NavigateTo("/grades");
+    }
+}

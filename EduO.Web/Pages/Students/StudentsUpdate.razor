@@ -1,0 +1,77 @@
+﻿@page "/grades/updategrade/{id:int}"
+
+<h2>Update Grade Form</h2>
+
+<EditForm Model="@_grade" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Name" HelperText="'Name' is required field"
+                              @bind-Value="_grade.Name" For="@(() => _grade.Name)"/>
+               @* <MudTextField Label="Email" Class="mt-3"
+                              @bind-Value="model.Email" For="@(() => model.Email)"/>
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+                <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                              @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>*@
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+            <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+            @if (success)
+            {
+                <MudText Color="Color.Success">Success</MudText>
+            }
+            else
+            {
+                <MudText Color="@Color.Error">
+                    <ValidationSummary />
+                </MudText>
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+</EditForm>
+
+
+
+@code {
+    [Inject]
+    IBaseService<GradeDto> GradeService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public int id { get; set; }
+
+    private GradeDto _grade = new GradeDto();
+
+    bool success;
+
+    protected async override Task OnInitializedAsync()
+    {
+        _grade = await GradeService.GetByIdAsync(id);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        await GradeService.Update(_grade);
+        success = true;
+        //StateHasChanged();
+        NavigationManager.NavigateTo("/grades");
+    }
+
+    //private async Task Update()
+    //{
+    //    await GradeService.Update(_grade);
+    //    _notification.Show();
+    //}
+}

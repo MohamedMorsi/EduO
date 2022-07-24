@@ -2,7 +2,7 @@
 
 namespace EduO.Api.Services.Contracts
 {
-    //public interface IStudentService
+    //public interface ITeacherService
     //{
     //    Task<IEnumerable<Grade>> GetAll();
     //    Task<Grade> GetById(int id);
