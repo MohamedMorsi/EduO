@@ -1,35 +1,64 @@
 ﻿@page "/grades/creategrade"
 
 <h2>Create Garde Form</h2>
-<EditForm Model="_grade" OnValidSubmit="Create" class="card card-body bg-light mt-5">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="mb-3 row">
-        <label for="name" class="col-md-2 col-form-label">Name:</label>
-        <div class="col-md-10">
-            <InputText id="name" class="form-control" @bind-Value="_grade.Name" />
-            <ValidationMessage For="@(() => _grade.Name)" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <button type="submit" class="btn btn-success">Create</button>
-        </div>
-    </div>
-</EditForm>
-<SuccessNotification @ref="_notification" />
 
+<EditForm Model="@_grade" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Name" HelperText="'Name' is required field"
+                                  @bind-Value="_grade.Name" For="@(() => _grade.Name)" />
+                    @* <MudTextField Label="Email" Class="mt-3"
+                        @bind-Value="model.Email" For="@(() => model.Email)"/>
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                        @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+                        <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                        @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>*@
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="5">
+            <MudPaper Class="pa-4 mud-height-full">
+                <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                @if (success)
+                {
+                    <MudText Color="Color.Success">Success</MudText>
+                }
+                else
+                {
+                    <MudText Color="@Color.Error">
+                        <ValidationSummary />
+                    </MudText>
+                }
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</EditForm>
 
 @code {
-    private GradeDto _grade = new GradeDto();
-    private SuccessNotification _notification;
-
     [Inject]
     public IBaseService<GradeDto> GradeService { get; set; }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    private GradeDto _grade = new GradeDto();
+    bool success;
 
-    private async Task Create()
+    private async Task OnValidSubmit(EditContext context)
     {
         await GradeService.CreateAsync(_grade);
-        _notification.Show();
+        success = true;
+        StateHasChanged();
+        NavigationManager.NavigateTo("/grades");
     }
+
+    //private async Task Create()
+    //{
+    //    await GradeService.CreateAsync(_grade);
+    //    _notification.Show();
+    //}
 }

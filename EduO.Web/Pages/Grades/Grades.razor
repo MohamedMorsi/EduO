@@ -1,24 +1,21 @@
 ﻿@page "/grades"
 
-<div class="row">
-    <div class="col-md-10">
-        @*Place for search and sort*@
+<h2>Grades</h2>
+
+<MudPaper Class="pa-5 ma-1">
+
+    <div class="row" style="margin-bottom:10px;">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="CreateNew"  Size="Size.Small" />
+
     </div>
-    <div class="col-md-2">
-        <a href="/grades/creategrade">Create Grade</a>
+
+    <div class="row">
+        <div class="col">
+            <GradeTable Grades="GradeDtoList" OnDeleted="DeleteGrade" />
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col">
-        @*Place for grades*@
-         <GradeTable Grades="GradeDtoList" OnDeleted="DeleteGrade" />
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        @*Place for pagination*@
-    </div>
-</div>
+
+</MudPaper>
 
 
 @code {
@@ -44,6 +41,11 @@
     private async Task GetGrades()
     {
         GradeDtoList = await GradeService.GetAllAsync();
+    }
+
+     private async Task CreateNew()
+    {
+        NavigationManager.NavigateTo("grades/creategrade");
     }
 
     private async Task DeleteGrade(int id)
