@@ -16,10 +16,11 @@ namespace EduO.ORM
 
         public IBaseRepository<ExClass> ExClass { get; private set; }
         public IBaseRepository<Grade> Grades { get; private set; }
-        public IBaseRepository<Student> Students { get; private set; }
+        public IBaseRepository<CourseType> CourseTypes { get; private set; }
         public IBaseRepository<Course> Courses  { get; private set; }
         public IBaseRepository<Fee> Fees { get; private set; }
         public IBaseRepository<Teacher> Teachers { get; private set; }
+        public IBaseRepository<Student> Students { get; private set; }
         public IBaseRepository<User> Users { get; private set; }
 
         //public IGradesRepository Grades { get; private set; }
@@ -31,10 +32,11 @@ namespace EduO.ORM
             ExClass = new BaseRepository<ExClass>(_context);
 
             Grades = new BaseRepository<Grade>(_context);
-            Students = new BaseRepository<Student>(_context);
+            CourseTypes = new BaseRepository<CourseType>(_context);
             Courses = new BaseRepository<Course>(_context);
             Fees = new BaseRepository<Fee>(_context);
             Teachers = new BaseRepository<Teacher>(_context);
+            Students = new BaseRepository<Student>(_context);
             Users = new BaseRepository<User>(_context);
             //Grades = new GradesRepository(_context);
         }

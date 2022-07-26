@@ -8,15 +8,15 @@ namespace EduO.Core.Models
 {
     public class Course :BaseModelI
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Desc { get; set; }
-        public string Type { get; set; }
 
+        //////////////////////////////////////////////////////////////////////////////////
 
-        ///////////////////////////////////////////////////
+        public Fee? Fee { get; set; }
 
-        public Fee Fee { get; set; }
+        public int CourseTypeId { get; set; }
+        public CourseType CourseType { get; set; }
 
 
         public int GradeId { get; set; }

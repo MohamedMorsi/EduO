@@ -38,6 +38,7 @@ namespace EduO.ORM
             //one-to-many relation using FluentApi
             modelBuilder.Entity<Grade>().HasMany(e => e.Students).WithOne(s => s.Grade).HasForeignKey(s => s.GradeId);
             modelBuilder.Entity<Grade>().HasMany(e => e.Courses).WithOne(s => s.Grade).HasForeignKey(s => s.GradeId);
+            modelBuilder.Entity<CourseType>().HasMany(e => e.Courses).WithOne(s => s.CourseType).HasForeignKey(s => s.CourseTypeId);
 
 
             //many-To-many relation using FluentApi  
@@ -62,12 +63,14 @@ namespace EduO.ORM
         public DbSet<ExClass> ExClass { get; set; }
 
         public DbSet<Grade> Grades { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseType> CourseTypes { get; set; }
+        public DbSet<Fee> Fees { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<GradesTeachers> GradesTeachers { get; set; }
         public DbSet<StudentsTeachers> StudentsTeachers { get; set; }
-        public DbSet<Course> Courses { get; set; }
         public DbSet<StudentsCourses> StudentsCourses { get; set; }
         public DbSet<TeacherCourses> TeacherCourses { get; set; }
-        public DbSet<Fee> Fees { get; set; }
     }
 }

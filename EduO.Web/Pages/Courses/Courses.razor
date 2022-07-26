@@ -1,0 +1,59 @@
+﻿@page "/courses"
+
+<h2>Courses</h2>
+
+<MudPaper Class="pa-5 ma-1">
+
+    <div class="row" style="margin-bottom:10px;">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="CreateNew"  Size="Size.Small" />
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <CourseTable Courses="CourseDtoList" OnDeleted="DeleteCourse" />
+        </div>
+    </div>
+
+</MudPaper>
+
+
+@code {
+
+    [Inject]
+    public IBaseService<CourseDto> CourseService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public List<CourseDto> CourseDtoList { get; set; } = new List<CourseDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        CourseDtoList =await CourseService.GetAllAsync();
+        //just for testing
+        foreach (var product in CourseDtoList)
+        {
+            Console.WriteLine(product.Name);
+        }
+    }
+
+    private async Task GetCourses()
+    {
+        CourseDtoList = await CourseService.GetAllAsync();
+    }
+
+     private async Task CreateNew()
+    {
+        NavigationManager.NavigateTo("courses/createcourse");
+    }
+
+    private async Task DeleteCourse(int id)
+    {
+        await CourseService.Delete(id);
+        //_productParameters.PageNumber = 1;
+        await GetCourses();
+        StateHasChanged();
+        //NavigationManager.NavigateTo("/Courses");
+    }
+}

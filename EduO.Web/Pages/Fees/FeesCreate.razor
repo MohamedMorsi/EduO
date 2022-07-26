@@ -1,23 +1,21 @@
-﻿@page "/teachers/createteacher"
+﻿@page "/Fees/createFee"
 
-<h2>Create Teacher Form</h2>
+<h2>Create Fee Form</h2>
 
-<EditForm Model="@_teacher" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_Fee" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <MudGrid>
         <MudItem xs="12" sm="7">
             <MudCard>
                 <MudCardContent>
-
                     <MudTextField Label="Name" HelperText="'Name' is required field"
-                                  @bind-Value="_teacher.Name" For="@(() => _teacher.Name)" />
-
-                    <MudTextField Label="Email" Class="mt-3"
-                        @bind-Value="_teacher.Email" For="@(() => _teacher.Email)"/>
-
-                    <MudTextField Label="Mobile #" Class="mt-3"
-                        @bind-Value="_teacher.Mobile_Number" For="@(() => _teacher.Mobile_Number)"/>
-                  
+                                  @bind-Value="_Fee.Desc" For="@(() => _Fee.Desc)" />
+                    @* <MudTextField Label="Email" Class="mt-3"
+                        @bind-Value="model.Email" For="@(() => model.Email)"/>
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                        @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+                        <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                        @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>*@
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
@@ -44,23 +42,23 @@
 
 @code {
     [Inject]
-    public IBaseService<TeacherDto> TeacherService { get; set; }
+    public IBaseService<FeeDto> FeeService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-    private TeacherDto _teacher = new TeacherDto();
+    private FeeDto _Fee = new FeeDto();
     bool success;
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await TeacherService.CreateAsync(_teacher);
+        await FeeService.CreateAsync(_Fee);
         success = true;
         StateHasChanged();
-        NavigationManager.NavigateTo("/teachers");
+        NavigationManager.NavigateTo("/Fees");
     }
 
     //private async Task Create()
     //{
-    //    await GradeService.CreateAsync(_grade);
+    //    await FeeService.CreateAsync(_Fee);
     //    _notification.Show();
     //}
 }

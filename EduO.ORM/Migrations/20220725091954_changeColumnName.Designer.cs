@@ -4,6 +4,7 @@ using EduO.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduO.ORM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220725091954_changeColumnName")]
+    partial class changeColumnName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("GradeId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.CourseType", b =>
@@ -83,7 +85,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CourseTypes", (string)null);
+                    b.ToTable("CourseTypes");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.ExClass", b =>
@@ -107,7 +109,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExClass", (string)null);
+                    b.ToTable("ExClass");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.Fee", b =>
@@ -140,7 +142,7 @@ namespace EduO.ORM.Migrations
                     b.HasIndex("CourseId")
                         .IsUnique();
 
-                    b.ToTable("Fees", (string)null);
+                    b.ToTable("Fees");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.Grade", b =>
@@ -164,7 +166,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Grades", (string)null);
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.GradesTeachers", b =>
@@ -179,7 +181,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("GradesTeachers", (string)null);
+                    b.ToTable("GradesTeachers");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.Role", b =>
@@ -255,7 +257,7 @@ namespace EduO.ORM.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.StudentsCourses", b =>
@@ -270,7 +272,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("StudentsCourses", (string)null);
+                    b.ToTable("StudentsCourses");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.StudentsTeachers", b =>
@@ -285,7 +287,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("StudentsTeachers", (string)null);
+                    b.ToTable("StudentsTeachers");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.Teacher", b =>
@@ -322,7 +324,7 @@ namespace EduO.ORM.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.TeacherCourses", b =>
@@ -337,7 +339,7 @@ namespace EduO.ORM.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("TeacherCourses", (string)null);
+                    b.ToTable("TeacherCourses");
                 });
 
             modelBuilder.Entity("EduO.Core.Models.User", b =>

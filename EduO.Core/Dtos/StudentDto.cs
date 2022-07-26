@@ -7,6 +7,7 @@ namespace EduO.Core.Dtos
         public Guid Id { get; set; }
 
         [MaxLength(250)]
+        [Required(ErrorMessage = "Name is required field")]
         public string Name { get; set; }
         public string Mobile_Number { get; set; }
         public string Email { get; set; }

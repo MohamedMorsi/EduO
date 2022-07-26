@@ -1,0 +1,85 @@
+﻿@inject IDialogService DialogService
+
+@if (Fees.Count > 0)
+{
+    <MudTable Items="@Fees" Hover="true" FixedHeader="true" Height="@(Fees.Count > 0 ? "400px":"")">
+        <HeaderContent>
+            <MudTh>#</MudTh>
+            <MudTh>Name</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="#">@context.Id</MudTd>
+            <MudTd DataLabel="Name">@context.Desc</MudTd>
+            <MudTd DataLabel="Actions">
+                <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Edit"  Size="Size.Small"
+                    OnClick="@(()=>RedirectToUpdate(@context.Id))"/>
+                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" 
+                    OnClick="@(()=>DeleteDialog(@context.Id))"/>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+else
+{
+    <span>
+        Loading exclass...
+    </span>
+}
+
+@code {
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IJSRuntime Js { get; set; }
+
+    [Parameter]
+    public List<FeeDto> Fees { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnDeleted { get; set; }
+
+
+    private void RedirectToUpdate(int id)
+    {
+        var url = Path.Combine($"/Fees/updateFee/{id}");
+        NavigationManager.NavigateTo(url);
+    }
+
+    private async Task Delete(int id)
+    {
+        var Fee = Fees.FirstOrDefault(p => p.Id.Equals(id));
+
+        //var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {Fee.Name} Fee?");
+        //if (confirmed)
+        //{
+            await OnDeleted.InvokeAsync(Fee.Id);
+        //}
+    }
+
+       private async Task DeleteDialog(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<Dialog>("Delete", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await Delete(id);
+        }
+    }
+
+}

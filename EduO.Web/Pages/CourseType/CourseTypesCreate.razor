@@ -1,23 +1,19 @@
-﻿@page "/teachers/createteacher"
+﻿@page "/CourseTypes/createCourseType"
 
-<h2>Create Teacher Form</h2>
+<h2>Create CourseType Form</h2>
 
-<EditForm Model="@_teacher" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_CourseType" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <MudGrid>
         <MudItem xs="12" sm="7">
             <MudCard>
                 <MudCardContent>
-
                     <MudTextField Label="Name" HelperText="'Name' is required field"
-                                  @bind-Value="_teacher.Name" For="@(() => _teacher.Name)" />
+                                  @bind-Value="_CourseType.Name" For="@(() => _CourseType.Name)" />
 
-                    <MudTextField Label="Email" Class="mt-3"
-                        @bind-Value="_teacher.Email" For="@(() => _teacher.Email)"/>
+                    <MudTextField Label="Description" HelperText="'Description' is required field"
+                                  @bind-Value="_CourseType.Description" For="@(() => _CourseType.Description)" />
 
-                    <MudTextField Label="Mobile #" Class="mt-3"
-                        @bind-Value="_teacher.Mobile_Number" For="@(() => _teacher.Mobile_Number)"/>
-                  
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
@@ -44,23 +40,23 @@
 
 @code {
     [Inject]
-    public IBaseService<TeacherDto> TeacherService { get; set; }
+    public IBaseService<CourseTypeDto> CourseTypeService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-    private TeacherDto _teacher = new TeacherDto();
+    private CourseTypeDto _CourseType = new CourseTypeDto();
     bool success;
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await TeacherService.CreateAsync(_teacher);
+        await CourseTypeService.CreateAsync(_CourseType);
         success = true;
         StateHasChanged();
-        NavigationManager.NavigateTo("/teachers");
+        NavigationManager.NavigateTo("/CourseTypes");
     }
 
     //private async Task Create()
     //{
-    //    await GradeService.CreateAsync(_grade);
+    //    await CourseTypeService.CreateAsync(_CourseType);
     //    _notification.Show();
     //}
 }

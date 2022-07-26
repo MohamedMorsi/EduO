@@ -1,0 +1,59 @@
+﻿@page "/fees"
+
+<h2>Fees</h2>
+
+<MudPaper Class="pa-5 ma-1">
+
+    <div class="row" style="margin-bottom:10px;">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="CreateNew"  Size="Size.Small" />
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <FeeTable Fees="FeeDtoList" OnDeleted="DeleteFee" />
+        </div>
+    </div>
+
+</MudPaper>
+
+
+@code {
+
+    [Inject]
+    public IBaseService<FeeDto> FeeService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public List<FeeDto> FeeDtoList { get; set; } = new List<FeeDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        FeeDtoList =await FeeService.GetAllAsync();
+        //just for testing
+        foreach (var product in FeeDtoList)
+        {
+            Console.WriteLine(product.Desc);
+        }
+    }
+
+    private async Task GetFees()
+    {
+        FeeDtoList = await FeeService.GetAllAsync();
+    }
+
+     private async Task CreateNew()
+    {
+        NavigationManager.NavigateTo("Fees/createFee");
+    }
+
+    private async Task DeleteFee(int id)
+    {
+        await FeeService.Delete(id);
+        //_productParameters.PageNumber = 1;
+        await GetFees();
+        StateHasChanged();
+        //NavigationManager.NavigateTo("/Fees");
+    }
+}

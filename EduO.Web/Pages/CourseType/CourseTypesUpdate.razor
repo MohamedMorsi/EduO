@@ -1,0 +1,74 @@
+﻿@page "/CourseTypes/updateCourseType/{id:int}"
+
+<h2>Update CourseType Form</h2>
+
+<EditForm Model="@_CourseType" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Name" HelperText="'Name' is required field"
+                              @bind-Value="_CourseType.Name" For="@(() => _CourseType.Name)"/>
+
+               <MudTextField Label="Description" HelperText="'Description' is required field"
+                                  @bind-Value="_CourseType.Description" For="@(() => _CourseType.Description)" />
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+            <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+            @if (success)
+            {
+                <MudText Color="Color.Success">Success</MudText>
+            }
+            else
+            {
+                <MudText Color="@Color.Error">
+                    <ValidationSummary />
+                </MudText>
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+</EditForm>
+
+
+
+@code {
+    [Inject]
+    IBaseService<CourseTypeDto> CourseTypeService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public int id { get; set; }
+
+    private CourseTypeDto _CourseType = new CourseTypeDto();
+
+    bool success;
+
+    protected async override Task OnInitializedAsync()
+    {
+        _CourseType = await CourseTypeService.GetByIdAsync(id);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        await CourseTypeService.Update(_CourseType);
+        success = true;
+        //StateHasChanged();
+        NavigationManager.NavigateTo("/CourseTypes");
+    }
+
+    //private async Task Update()
+    //{
+    //    await CourseTypeService.Update(_CourseType);
+    //    _notification.Show();
+    //}
+}

@@ -2,6 +2,8 @@ using EduO.Api.Helpers.Factory;
 using EduO.Api.Services;
 using EduO.Api.Services.Contracts;
 using EduO.Core.Models;
+using EduO.ORM.Repositories;
+using EduO.ORM.Repositories.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -74,17 +76,21 @@ builder.Services.AddAuthentication(opt =>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<IAuthService, AuthService>();
+//Repository
+//builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Services
-builder.Services.AddTransient<IBaseService<ExClass>, ExClassService>();
-builder.Services.AddTransient<IBaseService<Grade>, GradeService>();
-builder.Services.AddTransient<IBaseService<Teacher>, TeacherService>();
-builder.Services.AddTransient<IBaseService<Student>, StudentService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddScoped<IBaseService<ExClass>, ExClassService>();
+builder.Services.AddScoped<IBaseService<Grade>, GradeService>();
+builder.Services.AddScoped<IBaseService<CourseType>, CourseTypeService>();
+builder.Services.AddScoped<IBaseService<Course>, CourseService>();
+builder.Services.AddScoped<IBaseService<Fee>, FeeService>();
+builder.Services.AddScoped<IBaseService<Teacher>, TeacherService>();
+builder.Services.AddScoped<IBaseService<Student>, StudentService>();
 //builder.Services.AddTransient<IGradeService, GradeService>();
 
 

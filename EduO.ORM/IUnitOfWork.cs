@@ -13,10 +13,11 @@ namespace EduO.ORM
         IBaseRepository<ExClass> ExClass { get; }
 
         IBaseRepository<Grade> Grades { get; }
-        IBaseRepository<Student> Students { get; }
+        IBaseRepository<CourseType> CourseTypes { get; }
         IBaseRepository<Course> Courses { get; }
         IBaseRepository<Fee> Fees { get; }
         IBaseRepository<Teacher> Teachers { get; }
+        IBaseRepository<Student> Students { get; }
         IBaseRepository<User> Users { get; }
 
         //Special Repositories

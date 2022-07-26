@@ -23,6 +23,9 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 //builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IBaseService<ExClassDto>, ExClassService>();
 builder.Services.AddScoped<IBaseService<GradeDto>, GradeService>();
+builder.Services.AddScoped<IBaseService<CourseDto>, CourseService>();
+builder.Services.AddScoped<IBaseService<CourseTypeDto>, CourseTypeService>();
+builder.Services.AddScoped<IBaseService<FeeDto>, FeeService>();
 builder.Services.AddScoped<IBaseService<TeacherDto>, TeacherService>();
 builder.Services.AddScoped<IBaseService<StudentDto>, StudentService>();
 builder.Services.AddScoped<IUserService, UserService>();

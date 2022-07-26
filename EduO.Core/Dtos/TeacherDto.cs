@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 
 namespace EduO.Core.Dtos
 {
-    public class TeacherDto:BaseModelII
+    public class TeacherDto
     {
         public Guid Id { get; set; }
 
         [MaxLength(250)]
+        [Required(ErrorMessage = "Name is required field")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Mobile Number is required field")]
         public string Mobile_Number { get; set; }
+        [Required(ErrorMessage = "Email is required field")]
         public string Email { get; set; }
 
         /////////////////////////////////////////////////////////////////////////
