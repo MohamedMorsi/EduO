@@ -8,6 +8,10 @@ namespace EduO.Core.Dtos
 {
     public class CourseDto
     {
+        public CourseDto()
+        {
+
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Desc { get; set; }

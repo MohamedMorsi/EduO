@@ -4,6 +4,10 @@ namespace EduO.Core.Dtos
 {
     public class GradeDto
     {
+        public GradeDto()
+        {
+
+        }
         public int Id { get; set; }
 
         [MaxLength(100)]

@@ -14,10 +14,31 @@
 
                     <MudTextField Label="Desc" HelperText="'Desc' is required field"
                                   @bind-Value="_course.Desc" For="@(() => _course.Desc)" />
-                 
+
+                @*    <MudSelect T="int?" @bind-Value="_course.CourseTypeId" Label="Course Type" Clearable="true" Required="true" Placeholder="Please Select" AnchorOrigin="Origin.BottomCenter">
+                        @foreach(var courseType in CourseTypeDtoList)
+                        {
+                            <MudSelectItem Value="courseType.Id">@courseType.Name</MudSelectItem>
+                        }
+                    </MudSelect>*@
+
+                @*    <MudSelect T="int?" @bind-Value="_course.GradeId" Label="Grade" Clearable="true" Required="true" Placeholder="Please Select" AnchorOrigin="Origin.BottomCenter">
+                        @foreach(var grade in GradeDtoList)
+                        {
+                            <MudSelectItem Value="@grade.Id">@grade.Name</MudSelectItem>
+                        }
+                    </MudSelect>*@
+
+                    <MudSelect T="int?" Label="Grade" Clearable="true" Required="true">
+                        @foreach (var grade in GradeDtoList)
+                        {
+                            <MudSelectItem Value="@grade.Id" />
+                        }
+                    </MudSelect>
+
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -40,24 +61,36 @@
 </EditForm>
 
 @code {
+
+    private int[] prices = { 4 , 4 , 3 , 21  };
+
     [Inject]
-    public IBaseService<CourseDto> courseService { get; set; }
+    public IBaseService<CourseDto> CourseService { get; set; }
+    [Inject]
+    public IBaseService<CourseTypeDto> CourseTypeService { get; set; }
+    [Inject]
+    public IBaseService<GradeDto> GradeService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
+
     private CourseDto _course = new CourseDto();
+
+    public List<GradeDto> GradeDtoList { get; set; } = new List<GradeDto>();
+
     bool success;
+
+    protected async override Task OnInitializedAsync()
+    {
+        GradeDtoList =await GradeService.GetAllAsync();
+    }
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await courseService.CreateAsync(_course);
+        await CourseService.CreateAsync(_course);
         success = true;
         StateHasChanged();
         NavigationManager.NavigateTo("/courses");
     }
 
-    //private async Task Create()
-    //{
-    //    await courseService.CreateAsync(_course);
-    //    _notification.Show();
-    //}
+
 }
